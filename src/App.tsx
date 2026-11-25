@@ -69,8 +69,11 @@ export default function App() {
 
   return (
     <ModalContext.Provider value={modals}>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <Navbar path={path} />
-      <main>
+      <main id="main" tabIndex={-1} className="outline-none">
         {page}
         {path !== '/contact' && <CallToAction />}
       </main>

@@ -4,11 +4,21 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
   --color-brand: #0066ff;
   --color-brand-dark: #0052cc;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @layer base {
   html {
     scroll-padding-top: 96px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label {
+    touch-action: manipulation;
   }
   body {
     background: #f8fafc;
@@ -39,10 +49,10 @@
   line-height: 1.2;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 160ms var(--ease-out);
 }
 .btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 .btn-sm {
   padding: 0.5rem 1rem;
@@ -53,7 +63,8 @@
   color: #fff;
   box-shadow: 0 6px 16px -6px rgba(0, 102, 255, 0.55);
 }
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus-visible {
   background: var(--color-brand-dark);
 }
 .btn-secondary {
@@ -61,15 +72,35 @@
   color: #0f172a;
   border: 1px solid #dbe3ee;
 }
-.btn-secondary:hover {
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
   border-color: #b6c4d8;
   color: var(--color-brand);
 }
 .btn-arrow {
-  transition: transform 0.2s;
+  transition: transform 200ms var(--ease-out);
 }
-.btn:hover .btn-arrow {
-  transform: translateX(3px);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover .btn-arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* Skip link: hidden until focused with the keyboard */
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -64px;
+  z-index: 60;
+  border-radius: 9999px;
+  background: #0f172a;
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.skip-link:focus-visible {
+  top: 16px;
 }
 
 /* Shared surfaces */
@@ -89,7 +120,8 @@
 .animate-marquee {
   animation: marquee 50s linear infinite;
 }
-.animate-marquee:hover {
+.animate-marquee:hover,
+.animate-marquee:focus-within {
   animation-play-state: paused;
 }
 
@@ -100,12 +132,39 @@
   }
 }
 .animate-fade-up {
-  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fade-up 0.6s var(--ease-out) both;
+}
+
+/* Modals: scale up from 96% rather than sliding in */
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.animate-modal {
+  animation: modal-in 220ms var(--ease-out) both;
+}
+.animate-fade {
+  animation: fade-in 180ms ease both;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-fade-up {
     animation: none;
+  }
+  /* Keep the fade, drop the movement */
+  .animate-modal {
+    animation: fade-in 180ms ease both;
+  }
+  .btn,
+  .btn:active {
+    transform: none;
   }
 }
