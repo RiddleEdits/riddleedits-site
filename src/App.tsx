@@ -4,7 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Niches } from './components/Niches';
 import { Stats, Testimonials } from './components/Proof';
-import { GtaCaseStudy } from './components/GtaCaseStudy';
+import { CaseStudyFeature } from './components/CaseStudyFeature';
 import { Faqs } from './components/Faqs';
 import { CallToAction } from './components/CallToAction';
 import { Footer } from './components/Footer';
@@ -12,7 +12,6 @@ import { NichePage } from './components/NichePage';
 import { CaseStudiesPage } from './components/CaseStudiesPage';
 import { ContactPage } from './components/ContactPage';
 import { BookCallModal, VideoModal } from './components/Modals';
-import { SectionHeading } from './components/ui';
 
 const TITLES: Record<string, string> = {
   '/': 'RiddleEdits · Video editor for GTA and Roblox creators',
@@ -28,7 +27,7 @@ function Home() {
       <Hero />
       <Niches />
       <Stats />
-      <GtaCaseStudy heading={<SectionHeading eyebrow="Case study" title="Three months with Doodle Arkey Plays." />} />
+      <CaseStudyFeature />
       <Testimonials />
       <Faqs />
     </>
