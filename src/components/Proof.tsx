@@ -123,21 +123,17 @@ export function Testimonials() {
     viewport.current?.releasePointerCapture?.(e.pointerId);
   };
 
-  const fade = (side: 'left' | 'right') => {
-    const dir = side === 'left' ? 'right' : 'left';
-    return {
-      background: `linear-gradient(to ${dir}, rgba(248,250,252,0.8), rgba(248,250,252,0))`,
-      maskImage: `linear-gradient(to ${dir}, #000, transparent)`,
-      WebkitMaskImage: `linear-gradient(to ${dir}, #000, transparent)`
-    };
+  const edgeMask = {
+    maskImage: 'linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent)',
+    WebkitMaskImage: 'linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent)'
   };
 
   return (
-    <section aria-label="Testimonials" className="py-24 lg:py-32">
+    <section aria-label="Testimonials" className="pb-4 pt-2 lg:pt-4">
       <Container>
         <SectionHeading eyebrow="Testimonials" title="Hear it from the creators." />
 
-        <div className="relative mt-12">
+        <div className="relative mt-8">
           {/* Soft blue glows give the frosted cards something to blur */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
             <div className="absolute left-[8%] top-1/2 h-48 w-[40%] -translate-y-1/2 rounded-full bg-blue-300/15 blur-[70px]" />
@@ -163,7 +159,8 @@ export function Testimonials() {
             onWheel={(e) => {
               if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) s.x -= e.deltaX;
             }}
-            className="@container relative cursor-grab touch-pan-y overflow-hidden py-4 active:cursor-grabbing"
+            style={edgeMask}
+            className="@container relative -mb-10 cursor-grab touch-pan-y overflow-hidden pb-14 pt-4 active:cursor-grabbing"
           >
             <ul ref={track} className="flex w-max gap-4 px-2 [backface-visibility:hidden] will-change-transform">
               {TESTIMONIALS.map((t) => (
@@ -175,8 +172,6 @@ export function Testimonials() {
             </ul>
           </div>
 
-          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-6 sm:w-10" style={fade('left')} />
-          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-6 sm:w-10" style={fade('right')} />
         </div>
       </Container>
     </section>
