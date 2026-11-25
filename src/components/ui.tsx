@@ -20,7 +20,7 @@ export function Button({ variant = 'primary', size = 'md', href, onClick, classN
       <span>{children}</span>
       {arrow && (
         <svg className="btn-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M5 12h14M13 6l6 6-6 6" />
+          {variant === 'primary' ? <path d="M5 12h14M13 6l6 6-6 6" /> : <path d="M9 18l6-6-6-6" />}
         </svg>
       )}
     </>
@@ -62,7 +62,7 @@ export function Avatar({ id, size = 28, className = '', lazy = true }: { id: str
       width={size}
       height={size}
       loading={lazy ? 'lazy' : 'eager'}
-      className={`shrink-0 rounded-full object-cover ring-2 ring-white ${className}`}
+      className={`shrink-0 rounded-full object-cover ${/\bring-/.test(className) ? '' : 'ring-2 ring-white'} ${className}`}
       style={{ width: size, height: size }}
     />
   );

@@ -1,19 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link, useModals } from '../router';
-import { NICHES, asset, thumb, videosFor, type Niche } from '../data/content';
-import { Button } from './ui';
+import { NICHES, creator, thumb, videosFor, type Niche } from '../data/content';
+import { Avatar, Button } from './ui';
 
-const LINK = 'rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors';
+const TAB = 'relative rounded-full px-3.5 py-1.5 transition-colors duration-200';
+const tabCls = (active: boolean) => `${TAB} ${active ? 'glass-tab font-semibold text-[#0066ff]' : 'text-slate-800 hover:bg-white/40 hover:text-[#0066ff]'}`;
 
-export function Logo() {
+/** Blue squircle "R" mark, as in the original navbar. */
+export function LogoMark({ size = 28 }: { size?: number }) {
   return (
-    <Link href="/" aria-label="RiddleEdits home" className="flex items-center gap-2.5">
-      <img src={asset('riddle.jpg')} alt="" width={30} height={30} className="h-[30px] w-[30px] rounded-[9px] object-cover" />
-      <span translate="no" className="text-[16px] font-semibold tracking-tight text-slate-950">
-        Riddle<span className="text-slate-500">Edits</span>
-      </span>
-    </Link>
+    <span
+      aria-hidden="true"
+      className="flex items-center justify-center rounded-[9px] bg-gradient-to-b from-[#1a75ff] to-[#0055eb] shadow-[0_2px_8px_rgba(0,102,255,0.4),inset_0_1px_1px_rgba(255,255,255,0.45)] ring-1 ring-black/10"
+      style={{ width: size, height: size }}
+    >
+      <span className="text-[13px] font-extrabold tracking-tight text-white drop-shadow-sm">R</span>
+    </span>
   );
 }
 
@@ -21,7 +24,7 @@ export function Navbar({ path }: { path: string }) {
   const { openBookCall } = useModals();
   const [workOpen, setWorkOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const workRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const closeTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
@@ -31,9 +34,17 @@ export function Navbar({ path }: { path: string }) {
 
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
-      if (workRef.current && !workRef.current.contains(e.target as Node)) setWorkOpen(false);
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setWorkOpen(false);
+        setMobileOpen(false);
+      }
     };
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && (setWorkOpen(false), setMobileOpen(false));
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setWorkOpen(false);
+        setMobileOpen(false);
+      }
+    };
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
     return () => {
@@ -42,99 +53,149 @@ export function Navbar({ path }: { path: string }) {
     };
   }, []);
 
-  const active = (p: string) => path.startsWith(p);
-  const linkCls = (p: string) => `${LINK} ${active(p) ? 'text-[#0066ff] bg-blue-50' : 'text-slate-700 hover:text-slate-950'}`;
+  const openWork = () => {
+    window.clearTimeout(closeTimer.current);
+    setWorkOpen(true);
+  };
+  const closeWorkSoon = () => {
+    closeTimer.current = window.setTimeout(() => setWorkOpen(false), 200);
+  };
+
+  // Soft highlight that follows the cursor. Set as a CSS variable so it doesn't re-render React.
+  const trackPointer = (e: React.PointerEvent<HTMLElement>) => {
+    const el = headerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+  };
 
   return (
-    <header className="fixed inset-x-0 top-4 z-40 px-4">
-      <div className="relative mx-auto flex h-14 max-w-[1200px] items-center justify-between rounded-full border border-slate-200/80 bg-white/85 pl-4 pr-2 shadow-[0_10px_30px_-12px_rgba(15,40,100,0.25)] backdrop-blur-xl">
-        <Logo />
+    <header
+      ref={headerRef}
+      onPointerMove={trackPointer}
+      className="group/nav glass-bar fixed left-1/2 top-5 z-40 flex h-14 w-[calc(100%-32px)] max-w-[1200px] -translate-x-1/2 items-center justify-between rounded-full px-5 pr-3 ring-1 ring-blue-500/15"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 group-hover/nav:opacity-100"
+        style={{ background: 'radial-gradient(220px circle at var(--mx, 50%) 50%, rgba(0,102,255,0.08), transparent 70%)' }}
+      />
 
-        <nav aria-label="Main" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
-          <div
-            ref={workRef}
-            className="relative"
-            onMouseEnter={() => {
-              window.clearTimeout(closeTimer.current);
-              setWorkOpen(true);
-            }}
-            onMouseLeave={() => {
-              closeTimer.current = window.setTimeout(() => setWorkOpen(false), 150);
-            }}
-          >
-            <button
-              type="button"
-              aria-expanded={workOpen}
-              aria-haspopup="true"
-              onClick={() => setWorkOpen((o) => !o)}
-              className={`${linkCls('/work')} inline-flex items-center gap-1`}
-            >
-              Work <ChevronDown className={`h-3.5 w-3.5 transition-transform ${workOpen ? 'rotate-180' : ''}`} />
-            </button>
-            <div
-              className={`absolute left-1/2 top-full w-[480px] -translate-x-1/2 origin-top pt-3 transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-                workOpen ? 'visible scale-100 opacity-100' : 'invisible scale-[0.97] opacity-0'
-              }`}
-            >
-              <div className="grid grid-cols-2 gap-2 rounded-3xl border border-slate-200/80 bg-white p-2 shadow-[0_24px_50px_-20px_rgba(15,40,100,0.35)]">
-                {(Object.keys(NICHES) as Niche[]).map((key) => {
-                  const n = NICHES[key];
-                  return (
-                    <Link key={key} href={n.path} className="group overflow-hidden rounded-2xl transition-colors hover:bg-slate-50">
-                      <div className="aspect-video overflow-hidden rounded-xl bg-slate-200">
-                        <img src={thumb(videosFor(key)[0].id)} alt="" className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]" />
-                      </div>
-                      <div className="px-2 pb-2 pt-2.5">
-                        <div className="text-[14px] font-semibold text-slate-900 group-hover:text-[#0066ff]">{n.name}</div>
-                        <div className="text-[12.5px] text-slate-500">{n.formats.join(', ')}</div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-          <Link href="/case-studies" className={linkCls('/case-studies')}>
-            Case studies
-          </Link>
-          <Link href="/contact" className={linkCls('/contact')}>
-            Contact
-          </Link>
-        </nav>
+      <Link href="/" aria-label="RiddleEdits home" className="group relative z-10 flex items-center gap-2.5">
+        <span className="transition-transform duration-200 group-hover:scale-105">
+          <LogoMark />
+        </span>
+        <span translate="no" className="text-[17px] font-bold tracking-tight text-slate-950">
+          Riddle<span className="font-semibold text-slate-600">Edits</span>
+        </span>
+      </Link>
 
-        <div className="flex items-center gap-1">
-          <Button size="sm" onClick={openBookCall} className="hidden sm:inline-flex">
-            Book a call
-          </Button>
+      <nav aria-label="Main" className="absolute left-1/2 z-10 hidden -translate-x-1/2 items-center gap-1.5 text-[14px] font-medium md:flex">
+        <div className="relative -my-2 py-2" onMouseEnter={openWork} onMouseLeave={closeWorkSoon}>
           <button
             type="button"
-            onClick={() => setMobileOpen((o) => !o)}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-slate-700 hover:bg-slate-100 md:hidden"
+            aria-expanded={workOpen}
+            aria-haspopup="true"
+            onClick={() => setWorkOpen((o) => !o)}
+            className={`${tabCls(workOpen || path.startsWith('/work'))} flex items-center gap-1.5`}
           >
-            {mobileOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}
+            Work
+            <svg width="9" height="6" viewBox="0 0 9 6" fill="none" aria-hidden="true" className={`transition-transform duration-200 ${workOpen ? 'rotate-180' : ''}`}>
+              <path d="M1 1l3.5 3.5L8 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
           </button>
+
+          <div
+            className={`absolute left-1/2 top-full z-50 -translate-x-1/2 origin-top pt-2.5 transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+              workOpen ? 'visible scale-100 opacity-100' : 'invisible scale-[0.96] opacity-0'
+            }`}
+          >
+            <div className="glass-bar grid w-[540px] grid-cols-2 gap-2.5 rounded-[24px] p-2.5">
+              {(Object.keys(NICHES) as Niche[]).map((key) => {
+                const n = NICHES[key];
+                const vids = videosFor(key);
+                const ids = [...new Set(vids.map((v) => v.creatorId))];
+                return (
+                  <Link
+                    key={key}
+                    href={n.path}
+                    className="group flex flex-col overflow-hidden rounded-[16px] border border-black/[0.06] bg-white/70 shadow-sm transition-colors duration-200 hover:border-blue-300 hover:bg-blue-50/60"
+                  >
+                    <span className="relative block aspect-video overflow-hidden bg-slate-900">
+                      <img src={thumb(vids[0].id)} alt="" className="h-full w-full object-cover opacity-90 transition-[scale,opacity] duration-300 ease-out group-hover:scale-[1.04] group-hover:opacity-100" />
+                      <span className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                      <span className="absolute bottom-2.5 left-3 flex -space-x-1.5">
+                        {ids.map((id) => (
+                          <Avatar key={id} id={id} size={20} className="ring-white/50" />
+                        ))}
+                      </span>
+                    </span>
+                    <span className="px-3.5 pb-3 pt-2.5">
+                      <span className="flex items-center gap-1 text-[13.5px] font-bold text-slate-900 group-hover:text-[#0066ff]">
+                        {n.name}
+                        <span aria-hidden="true" className="text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#0066ff]">
+                          ›
+                        </span>
+                      </span>
+                      <span className="mt-0.5 block text-[12px] leading-[1.4] text-slate-600">
+                        {n.formats.join(', ')} · {ids.map((id) => creator(id).name).join(', ')}
+                      </span>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        {mobileOpen && (
-          <div className="absolute inset-x-0 top-[calc(100%+8px)] rounded-3xl border border-slate-200/80 bg-white p-3 shadow-[0_24px_50px_-20px_rgba(15,40,100,0.35)] md:hidden">
-            {[
-              ['/work/gta', 'GTA work'],
-              ['/work/roblox', 'Roblox work'],
-              ['/case-studies', 'Case studies'],
-              ['/contact', 'Contact']
-            ].map(([href, label]) => (
-              <Link key={href} href={href} className={`block rounded-2xl px-4 py-3 text-[15px] font-medium ${active(href) ? 'bg-blue-50 text-[#0066ff]' : 'text-slate-800 hover:bg-slate-50'}`}>
-                {label}
-              </Link>
-            ))}
-            <Button onClick={openBookCall} className="mt-2 w-full">
-              Book a call
-            </Button>
-          </div>
-        )}
+        <Link href="/case-studies" className={tabCls(path.startsWith('/case-studies'))}>
+          Case studies
+        </Link>
+        <Link href="/contact" className={tabCls(path.startsWith('/contact'))}>
+          Contact
+        </Link>
+      </nav>
+
+      <div className="relative z-10 flex items-center gap-1">
+        <Button size="sm" onClick={openBookCall} className="hidden sm:inline-flex">
+          Book a call
+        </Button>
+        <button
+          type="button"
+          onClick={() => setMobileOpen((o) => !o)}
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
+          className="flex h-10 w-10 items-center justify-center rounded-full text-slate-700 hover:bg-white/60 md:hidden"
+        >
+          {mobileOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}
+        </button>
       </div>
+
+      {mobileOpen && (
+        <div className="glass-bar absolute left-0 right-0 top-16 z-50 flex flex-col gap-1 rounded-2xl p-4 md:hidden" style={{ background: 'rgba(255, 255, 255, 0.97)' }}>
+          {[
+            ['/work/gta', 'GTA work'],
+            ['/work/roblox', 'Roblox work'],
+            ['/case-studies', 'Case studies'],
+            ['/contact', 'Contact']
+          ].map(([href, label]) => (
+            <Link
+              key={href}
+              href={href}
+              className={`flex items-center justify-between rounded-xl px-3 py-2.5 font-semibold ${path.startsWith(href) ? 'text-[#0066ff]' : 'text-slate-900 hover:text-[#0066ff]'}`}
+            >
+              {label}
+              <span aria-hidden="true" className="text-slate-400">
+                ›
+              </span>
+            </Link>
+          ))}
+          <div className="my-1 h-px bg-slate-200/80" />
+          <Button onClick={openBookCall} className="w-full">
+            Book a call
+          </Button>
+        </div>
+      )}
     </header>
   );
 }
