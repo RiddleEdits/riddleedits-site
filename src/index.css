@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  --color-brand: #0066ff;
+  --color-brand-dark: #0052cc;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 96px;
+  }
+  body {
+    background: #f8fafc;
+    color: #0f172a;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: rgba(0, 102, 255, 0.18);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.7rem 1.35rem;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 13px;
+}
+.btn-primary {
+  background: var(--color-brand);
+  color: #fff;
+  box-shadow: 0 6px 16px -6px rgba(0, 102, 255, 0.55);
+}
+.btn-primary:hover {
+  background: var(--color-brand-dark);
+}
+.btn-secondary {
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #dbe3ee;
+}
+.btn-secondary:hover {
+  border-color: #b6c4d8;
+  color: var(--color-brand);
+}
+.btn-arrow {
+  transition: transform 0.2s;
+}
+.btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* Shared surfaces */
+.card {
+  background: #fff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 24px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03), 0 20px 40px -28px rgba(15, 40, 100, 0.22);
+}
+
+/* Creator marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 50s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-fade-up {
+    animation: none;
+  }
+}
