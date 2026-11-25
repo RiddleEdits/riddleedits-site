@@ -37,7 +37,7 @@ function TestimonialCard({ creatorId, quote, hidden }: { creatorId: string; quot
   const c = creator(creatorId);
   return (
     <li aria-hidden={hidden} className="w-[76cqw] shrink-0 sm:w-[calc((100cqw-1rem)/2.3)] lg:w-[calc((100cqw-3.5rem)/4.4)]">
-      <figure className="group relative flex h-full select-none flex-col justify-between gap-6 rounded-[24px] border-2 border-white bg-[linear-gradient(160deg,rgba(255,255,255,0.92)_0%,rgba(236,244,255,0.88)_100%)] p-6 shadow-[0_18px_40px_-24px_rgba(0,102,255,0.28),inset_0_1px_0_rgba(255,255,255,0.9)]">
+      <figure className="group relative flex h-full select-none flex-col justify-between gap-6 rounded-[24px] border-2 border-white bg-[linear-gradient(160deg,#f1f6ff_0%,#e2ecff_100%)] p-6 shadow-[0_18px_36px_-20px_rgba(0,82,204,0.32),0_2px_6px_-2px_rgba(0,82,204,0.1)]">
         <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[21px] bg-[rgba(0,102,255,0.06)] opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100" />
         <blockquote className="relative text-[16px] font-medium leading-snug tracking-[-0.01em] text-slate-900">“{quote}”</blockquote>
         <figcaption className="relative flex items-center gap-3">
@@ -136,8 +136,8 @@ export function Testimonials() {
         <div className="relative mt-8">
           {/* Soft blue glows give the frosted cards something to blur */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div className="absolute left-[8%] top-1/2 h-48 w-[40%] -translate-y-1/2 rounded-full bg-blue-300/15 blur-[70px]" />
-            <div className="absolute right-[8%] top-1/2 h-48 w-[35%] -translate-y-1/2 rounded-full bg-sky-300/15 blur-[70px]" />
+            <div className="absolute left-[8%] top-1/2 h-48 w-[40%] -translate-y-1/2 rounded-full bg-blue-300/25 blur-[70px]" />
+            <div className="absolute right-[8%] top-1/2 h-48 w-[35%] -translate-y-1/2 rounded-full bg-sky-300/25 blur-[70px]" />
           </div>
 
           <div
