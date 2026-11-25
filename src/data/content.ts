@@ -10,7 +10,7 @@ export const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replac
 export const SITE = {
   name: 'RiddleEdits',
   email: 'rgsfirdaus@gmail.com',
-  calendly: 'https://calendly.com/rgsfirdaus/30min',
+  booking: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ1i59Eaq-oPaBmzgbslQ6Wxd5GeDzb9uRUKhL2o75jZic2mTDZdGS4_Lb0-iCAVUeG0oaJhzgW-',
   x: 'https://x.com/RiddlePlayZz',
   instagram: 'https://www.instagram.com/riddle.editzzz/',
   showreelId: '5EAMyKkARdA'
