@@ -39,7 +39,7 @@ export function Hero() {
             <div className="mt-8 flex items-center gap-3">
               <div className="flex -space-x-2">
                 {CREATORS.slice(0, 5).map((c) => (
-                  <Avatar key={c.id} id={c.id} size={30} />
+                  <Avatar key={c.id} id={c.id} size={30} lazy={false} />
                 ))}
               </div>
               <p className="text-[13.5px] font-medium text-slate-600">

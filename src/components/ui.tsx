@@ -53,7 +53,7 @@ export function SectionHeading({ eyebrow, title, intro, center = false }: { eyeb
   );
 }
 
-export function Avatar({ id, size = 28, className = '' }: { id: string; size?: number; className?: string }) {
+export function Avatar({ id, size = 28, className = '', lazy = true }: { id: string; size?: number; className?: string; lazy?: boolean }) {
   const c = creator(id);
   return (
     <img
@@ -61,7 +61,7 @@ export function Avatar({ id, size = 28, className = '' }: { id: string; size?: n
       alt={c.name}
       width={size}
       height={size}
-      loading="lazy"
+      loading={lazy ? 'lazy' : 'eager'}
       className={`shrink-0 rounded-full object-cover ring-2 ring-white ${className}`}
       style={{ width: size, height: size }}
     />
@@ -74,13 +74,16 @@ export function VideoThumb({
   onOpen,
   showViews = true,
   className = '',
-  rounded = 'rounded-2xl'
+  rounded = 'rounded-2xl',
+  priority = false
 }: {
   video: Video;
   onOpen: (id: string, title: string) => void;
   showViews?: boolean;
   className?: string;
   rounded?: string;
+  /** Above-the-fold: load immediately with high priority. */
+  priority?: boolean;
 }) {
   return (
     <button
@@ -89,9 +92,15 @@ export function VideoThumb({
       aria-label={`Play “${video.title}”`}
       className={`group relative block w-full overflow-hidden bg-slate-200 aspect-video ${rounded} ${className}`}
     >
-      <img src={thumb(video.id)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
-      <span className="absolute inset-0 bg-slate-950/0 transition-colors group-hover:bg-slate-950/15" />
-      <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 shadow-lg transition-transform group-hover:scale-110">
+      <img
+        src={thumb(video.id)}
+        alt=""
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+      />
+      <span className="absolute inset-0 bg-slate-950/0 transition-colors duration-200 group-hover:bg-slate-950/15" />
+      <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 shadow-lg transition-transform duration-200 ease-out group-hover:scale-110 group-active:scale-95">
         <Play className="ml-0.5 h-5 w-5 fill-[#0066ff] text-[#0066ff]" />
       </span>
       {showViews && (

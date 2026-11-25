@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { CASE_STUDIES, NICHES, caseStats, compact, compactLikes, creator, quoteFor, type Niche } from '../data/content';
-import { useModals } from '../router';
+import { useModals, withBase } from '../router';
 import { Avatar, Container, Eyebrow, VideoCard } from './ui';
 
 type Filter = 'all' | Niche;
 
 export function CaseStudiesPage() {
   const { openVideo } = useModals();
-  const [filter, setFilter] = useState<Filter>('all');
+  // The filter lives in the URL (?niche=gta) so a filtered view can be shared.
+  const initial = new URLSearchParams(window.location.search).get('niche');
+  const [filter, setFilterState] = useState<Filter>(initial === 'gta' || initial === 'roblox' ? initial : 'all');
+  const setFilter = (f: Filter) => {
+    setFilterState(f);
+    window.history.replaceState(null, '', withBase('/case-studies') + (f === 'all' ? '' : `?niche=${f}`));
+  };
   const studies = CASE_STUDIES.filter((cs) => filter === 'all' || cs.niche === filter);
   const filters: [Filter, string][] = [['all', 'All'], ...(Object.keys(NICHES) as Niche[]).map((k) => [k, NICHES[k].name] as [Filter, string])];
 
@@ -17,20 +23,19 @@ export function CaseStudiesPage() {
         <Container>
           <Eyebrow>Case studies</Eyebrow>
           <h1 className="mt-3 max-w-[720px] text-[clamp(38px,4.6vw,58px)] font-semibold leading-[1.04] tracking-[-0.04em] text-slate-950 text-balance">
-            Real creators, real numbers.
+            The channels I edit for
           </h1>
           <p className="mt-5 max-w-[520px] text-[16.5px] leading-relaxed text-slate-600">
             The channels I edit for and the videos I cut for them. View counts come straight from YouTube.
           </p>
-          <div className="mt-8 inline-flex gap-1 rounded-full border border-slate-200 bg-white p-1" role="tablist" aria-label="Filter by niche">
+          <div className="mt-8 inline-flex gap-1 rounded-full border border-slate-200 bg-white p-1" role="group" aria-label="Filter by niche">
             {filters.map(([key, label]) => (
               <button
                 key={key}
                 type="button"
-                role="tab"
-                aria-selected={filter === key}
+                aria-pressed={filter === key}
                 onClick={() => setFilter(key)}
-                className={`rounded-full px-4 py-1.5 text-[13.5px] font-medium transition-colors ${filter === key ? 'bg-slate-950 text-white' : 'text-slate-600 hover:text-slate-950'}`}
+                className={`rounded-full px-4 py-1.5 text-[13.5px] font-medium transition-colors duration-200 ${filter === key ? 'bg-slate-950 text-white' : 'text-slate-600 hover:text-slate-950'}`}
               >
                 {label}
               </button>

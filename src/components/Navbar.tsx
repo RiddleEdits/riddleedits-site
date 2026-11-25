@@ -10,7 +10,7 @@ export function Logo() {
   return (
     <Link href="/" aria-label="RiddleEdits home" className="flex items-center gap-2.5">
       <img src={asset('riddle.jpg')} alt="" width={30} height={30} className="h-[30px] w-[30px] rounded-[9px] object-cover" />
-      <span className="text-[16px] font-semibold tracking-tight text-slate-950">
+      <span translate="no" className="text-[16px] font-semibold tracking-tight text-slate-950">
         Riddle<span className="text-slate-500">Edits</span>
       </span>
     </Link>
@@ -72,8 +72,8 @@ export function Navbar({ path }: { path: string }) {
               Work <ChevronDown className={`h-3.5 w-3.5 transition-transform ${workOpen ? 'rotate-180' : ''}`} />
             </button>
             <div
-              className={`absolute left-1/2 top-full w-[480px] -translate-x-1/2 pt-3 transition-all duration-200 ${
-                workOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-1 opacity-0'
+              className={`absolute left-1/2 top-full w-[480px] -translate-x-1/2 origin-top pt-3 transition-[opacity,scale,visibility] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                workOpen ? 'visible scale-100 opacity-100' : 'invisible scale-[0.97] opacity-0'
               }`}
             >
               <div className="grid grid-cols-2 gap-2 rounded-3xl border border-slate-200/80 bg-white p-2 shadow-[0_24px_50px_-20px_rgba(15,40,100,0.35)]">
@@ -82,7 +82,7 @@ export function Navbar({ path }: { path: string }) {
                   return (
                     <Link key={key} href={n.path} className="group overflow-hidden rounded-2xl transition-colors hover:bg-slate-50">
                       <div className="aspect-video overflow-hidden rounded-xl bg-slate-200">
-                        <img src={thumb(videosFor(key)[0].id)} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
+                        <img src={thumb(videosFor(key)[0].id)} alt="" className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]" />
                       </div>
                       <div className="px-2 pb-2 pt-2.5">
                         <div className="text-[14px] font-semibold text-slate-900 group-hover:text-[#0066ff]">{n.name}</div>
@@ -113,7 +113,7 @@ export function Navbar({ path }: { path: string }) {
             aria-expanded={mobileOpen}
             className="flex h-10 w-10 items-center justify-center rounded-full text-slate-700 hover:bg-slate-100 md:hidden"
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}
           </button>
         </div>
 

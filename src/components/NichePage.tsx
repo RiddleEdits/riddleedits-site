@@ -29,7 +29,7 @@ export function NichePage({ niche }: { niche: Niche }) {
             <div className="mt-8 flex items-center gap-3 text-[13.5px] text-slate-600">
               <span className="flex -space-x-2">
                 {creatorIds.map((id) => (
-                  <Avatar key={id} id={id} size={30} />
+                  <Avatar key={id} id={id} size={30} lazy={false} />
                 ))}
               </span>
               <span>
@@ -38,7 +38,7 @@ export function NichePage({ niche }: { niche: Niche }) {
             </div>
           </div>
           <div>
-            <VideoThumb video={featured} onOpen={openVideo} rounded="rounded-[24px]" className="shadow-[0_40px_80px_-40px_rgba(15,40,100,0.55)]" />
+            <VideoThumb video={featured} onOpen={openVideo} priority rounded="rounded-[24px]" className="shadow-[0_40px_80px_-40px_rgba(15,40,100,0.55)]" />
             <p className="mt-3 text-[13.5px] text-slate-500">
               <span className="font-medium text-slate-800">{featured.title}</span> · {creator(featured.creatorId).name}
             </p>

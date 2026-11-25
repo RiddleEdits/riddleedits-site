@@ -20,9 +20,9 @@ export function FaqList({ items }: { items: { q: string; a: string }[] }) {
             >
               <span className="w-6 shrink-0 text-[12px] font-medium tabular-nums text-slate-400">{String(i + 1).padStart(2, '0')}</span>
               <span className="flex-1 text-[15px] font-semibold text-slate-900">{item.q}</span>
-              <Plus className={`h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-45' : ''}`} />
+              <Plus aria-hidden="true" className={`h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 ease-out ${isOpen ? 'rotate-45' : ''}`} />
             </button>
-            <div className={`grid transition-[grid-template-rows] duration-300 ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+            <div className={`grid transition-[grid-template-rows] duration-250 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
               <div className="overflow-hidden">
                 <p className="pb-5 pl-[64px] pr-6 text-[14.5px] leading-relaxed text-slate-600 sm:pl-[70px]">{item.a}</p>
               </div>
@@ -44,7 +44,7 @@ export function Faqs() {
         <div>
           <h2 className="text-[36px] font-semibold tracking-[-0.03em] text-slate-950 sm:text-[42px]">FAQs</h2>
           <p className="mt-3 text-[15.5px] leading-relaxed text-slate-600">Pick your niche. If your question isn’t here, ask me on a call.</p>
-          <div className="mt-6 flex flex-col gap-2" role="tablist" aria-label="Niche">
+          <div className="mt-6 flex flex-col gap-2" role="group" aria-label="Show FAQs for">
             {(Object.keys(NICHES) as Niche[]).map((key) => {
               const ids = [...new Set(videosFor(key).map((v) => v.creatorId))];
               const on = niche === key;
@@ -52,10 +52,9 @@ export function Faqs() {
                 <button
                   key={key}
                   type="button"
-                  role="tab"
-                  aria-selected={on}
+                  aria-pressed={on}
                   onClick={() => setNiche(key)}
-                  className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-left transition ${
+                  className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-[background-color,border-color,box-shadow] duration-200 ${
                     on ? 'border-[#0066ff]/40 bg-white shadow-[0_10px_30px_-18px_rgba(0,102,255,0.6)]' : 'border-transparent hover:bg-white/70'
                   }`}
                 >

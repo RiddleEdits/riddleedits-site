@@ -37,15 +37,27 @@ export function ContactPage() {
               <h2 className="text-[19px] font-semibold text-slate-900">Send a message</h2>
               <div>
                 <label htmlFor="c-name" className={LABEL}>Your name</label>
-                <input id="c-name" required value={form.name} onChange={set('name')} placeholder="e.g. Doodle" className={FIELD} />
+                <input id="c-name" name="name" autoComplete="name" required value={form.name} onChange={set('name')} placeholder="Doodle…" className={FIELD} />
               </div>
               <div>
                 <label htmlFor="c-channel" className={LABEL}>YouTube channel</label>
-                <input id="c-channel" required type="url" value={form.channel} onChange={set('channel')} placeholder="https://youtube.com/@yourchannel" className={FIELD} />
+                <input
+                  id="c-channel"
+                  name="channel"
+                  type="url"
+                  inputMode="url"
+                  autoComplete="url"
+                  spellCheck={false}
+                  required
+                  value={form.channel}
+                  onChange={set('channel')}
+                  placeholder="https://youtube.com/@yourchannel…"
+                  className={FIELD}
+                />
               </div>
               <div>
                 <label htmlFor="c-niche" className={LABEL}>Niche</label>
-                <select id="c-niche" value={form.niche} onChange={set('niche')} className={FIELD}>
+                <select id="c-niche" name="niche" value={form.niche} onChange={set('niche')} className={FIELD}>
                   {(Object.keys(NICHES) as Niche[]).map((k) => (
                     <option key={k} value={k}>{NICHES[k].name}</option>
                   ))}
@@ -54,17 +66,17 @@ export function ContactPage() {
               </div>
               <div>
                 <label htmlFor="c-msg" className={LABEL}>What are you working on?</label>
-                <textarea id="c-msg" rows={4} value={form.message} onChange={set('message')} placeholder="Video idea, upload schedule, deadline, style references…" className={`${FIELD} resize-y`} />
+                <textarea id="c-msg" name="message" autoComplete="off" rows={4} value={form.message} onChange={set('message')} placeholder="Video idea, upload schedule, deadline, style references…" className={`${FIELD} resize-y`} />
               </div>
               <button type="submit" className="btn btn-primary mt-1 w-full">
-                Send <Send className="h-4 w-4" />
+                Send Message <Send aria-hidden="true" className="h-4 w-4" />
               </button>
               <p className="text-center text-[12.5px] text-slate-500">This opens your email app with the message ready to send.</p>
             </form>
 
             <a href={`mailto:${SITE.email}`} className="card flex items-center gap-3 rounded-2xl p-4 transition-colors hover:border-slate-300">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-[#0066ff]">
-                <Mail className="h-5 w-5" />
+                <Mail aria-hidden="true" className="h-5 w-5" />
               </span>
               <span>
                 <span className="block text-[13px] text-slate-500">Or email me directly</span>

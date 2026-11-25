@@ -52,16 +52,16 @@ export function CalendlyScheduler({ height = 680 }: { height?: number }) {
           </div>
         </div>
         <a href={SITE.calendly} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm">
-          Open in Calendly <ExternalLink className="h-3.5 w-3.5" />
+          Open in Calendly <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
         </a>
       </div>
       {failed ? (
         <div className="flex flex-col items-center justify-center px-8 py-20 text-center" style={{ minHeight: height }}>
-          <CalendarDays className="h-10 w-10 text-[#0066ff]" />
+          <CalendarDays aria-hidden="true" className="h-10 w-10 text-[#0066ff]" />
           <p className="mt-4 text-[17px] font-semibold text-slate-900">The calendar didn’t load here</p>
           <p className="mt-2 max-w-[320px] text-[14px] text-slate-600">You can still pick a time on Calendly directly.</p>
           <a href={SITE.calendly} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-6">
-            Pick a time <ExternalLink className="h-4 w-4" />
+            Pick a time <ExternalLink aria-hidden="true" className="h-4 w-4" />
           </a>
         </div>
       ) : (

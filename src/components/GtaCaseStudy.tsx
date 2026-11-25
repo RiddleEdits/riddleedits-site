@@ -49,7 +49,7 @@ const CSS = `
              radial-gradient(18% 26% at 99% 72%, rgba(0,102,255,.12), transparent 70%); }
 
 .gcs-case { position:relative; z-index:1; max-width:1120px; margin:0 auto;
-  opacity:0; transform:translateY(20px); transition:opacity .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1); }
+  opacity:0; transform:translateY(20px); transition:opacity .6s cubic-bezier(.23,1,.32,1), transform .6s cubic-bezier(.23,1,.32,1); }
 .gcs-case.in { opacity:1; transform:none; }
 .gcs-card { position:relative; border-radius:28px; padding:24px 24px 22px 26px;
   background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(244,248,255,.96));
@@ -63,12 +63,12 @@ const CSS = `
 .gcs-curve { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
 .gcs-mile { position:absolute; top:2px; width:20%; min-width:200px; display:flex; gap:12px; padding:13px 14px 15px; border-radius:16px;
   background:#fff; box-shadow:inset 0 0 0 1px var(--line), 0 13px 26px -18px rgba(31,80,200,.3);
-  transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s; }
+  transition:transform .3s cubic-bezier(.23,1,.32,1), box-shadow .3s ease; }
 .gcs-mile.on { transform:translateY(-4px); box-shadow:inset 0 0 0 1.5px rgba(0,102,255,.35), 0 18px 32px -16px rgba(0,102,255,.45); }
 .gcs-mile .gcs-ic { display:grid; place-items:center; width:38px; height:38px; border-radius:10px; flex:none; color:#fff;
   background:#0066ff; box-shadow:0 6px 14px -6px rgba(0,102,255,.75); }
 .gcs-mile .gcs-ic svg { width:18px; height:18px; }
-.gcs-mile h4 { font-size:14px; font-weight:700; letter-spacing:-.2px; }
+.gcs-mile .gcs-mt { font-size:14px; font-weight:700; letter-spacing:-.2px; }
 .gcs-mile em { display:block; font-style:normal; font-size:15.5px; font-weight:800; color:var(--blue); margin-top:1px; letter-spacing:-.3px; }
 .gcs-mile p { margin-top:5px; font-size:11.8px; line-height:1.42; color:var(--muted); }
 .gcs-m0 { left:8.2%; } .gcs-m1 { left:40.5%; } .gcs-m2 { left:72%; top:-4px; }
@@ -87,8 +87,8 @@ const CSS = `
 .gcs-play { position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); display:flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%;
   background:rgba(255,255,255,.85); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
   border:1px solid rgba(255,255,255,.6); box-shadow:0 6px 16px rgba(10,20,60,.18);
-  transition:transform .25s ease, background .25s ease; pointer-events:none; z-index:10; }
-.gcs-player:hover .gcs-play { transform:translate(-50%, -50%) scale(1.08); background:#ffffff; }
+  transition:transform .2s cubic-bezier(.23,1,.32,1), background-color .2s ease; pointer-events:none; z-index:10; }
+@media (hover:hover) and (pointer:fine) { .gcs-player:hover .gcs-play { transform:translate(-50%, -50%) scale(1.08); background:#ffffff; } }
 .gcs-play svg { width:16px; height:16px; margin-left:2px; display:block; fill:#0066ff; stroke:#0066ff; }
 .gcs-len { position:absolute; right:9px; bottom:9px; padding:3px 7px; border-radius:6px; background:rgba(10,12,18,.82); color:#fff; font-weight:700; font-size:12px; pointer-events:none; z-index:5; }
 .gcs-who { display:flex; align-items:center; gap:10px; margin-top:12px; }
@@ -116,8 +116,9 @@ const CSS = `
 .gcs-cta { margin-top:auto; padding-top:13px; align-self:flex-end; }
 .gcs-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 22px; border-radius:999px; font-size:14px; font-weight:700; color:#fff !important;
   background:#0066ff; box-shadow:0 6px 16px -6px rgba(0,102,255,.55);
-  transition:transform .25s, box-shadow .25s; }
-.gcs-btn:hover { background:#0052cc; }
+  transition:background-color .2s ease, transform 160ms cubic-bezier(.23,1,.32,1); }
+.gcs-btn:hover, .gcs-btn:focus-visible { background:#0052cc; }
+.gcs-btn:active { transform:scale(.97); }
 .gcs-head { position:relative; z-index:1; max-width:1136px; margin:0 auto 150px; }
 
 @media (max-width:1100px) {
@@ -375,7 +376,7 @@ export function GtaCaseStudy({ heading }: { heading?: ReactNode }) {
               <div key={i} ref={(el) => { mileRefs.current[i] = el; }} className={`gcs-mile gcs-m${i} ${step === i ? 'on' : ''}`}>
                 <span className="gcs-ic">{MILE_ICONS[i % MILE_ICONS.length]}</span>
                 <div>
-                  <h4>{m.t}</h4>
+                  <p className="gcs-mt">{m.t}</p>
                   <em>{milestoneTexts[i] ?? m.s}</em>
                   <p>{m.p}</p>
                 </div>

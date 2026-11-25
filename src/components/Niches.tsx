@@ -60,16 +60,15 @@ function NicheCard({ niche, flip }: { niche: Niche; flip?: boolean }) {
             ))}
           </dl>
         </div>
-        <div className="mt-3 grid grid-cols-4 gap-2" role="tablist" aria-label={`${n.name} videos`}>
+        <div className="mt-3 grid grid-cols-4 gap-2" role="group" aria-label={`Choose a ${n.name} video`}>
           {videos.map((v, i) => (
             <button
               key={v.id}
               type="button"
-              role="tab"
-              aria-selected={i === index}
+              aria-pressed={i === index}
               aria-label={v.title}
               onClick={() => setIndex(i)}
-              className={`aspect-video overflow-hidden rounded-lg ring-2 transition ${i === index ? 'ring-[#0066ff]' : 'opacity-60 ring-transparent hover:opacity-100'}`}
+              className={`aspect-video overflow-hidden rounded-lg ring-2 transition-[opacity,box-shadow] duration-200 ${i === index ? 'ring-[#0066ff]' : 'opacity-60 ring-transparent hover:opacity-100'}`}
             >
               <img src={thumb(v.id)} alt="" loading="lazy" className="h-full w-full object-cover" />
             </button>
@@ -84,7 +83,7 @@ export function Niches() {
   return (
     <section id="work" className="py-24 lg:py-32">
       <Container>
-        <SectionHeading eyebrow="What I edit" title="Two niches. One editor who knows both." />
+        <SectionHeading eyebrow="What I edit" title="Long-form GTA and Roblox videos" />
         <div className="mt-12 flex flex-col gap-6">
           <NicheCard niche="gta" />
           <NicheCard niche="roblox" flip />
