@@ -1,4 +1,4 @@
-import { VIDEOS, thumb } from '../data/content';
+import { VIDEOS, asset, thumb } from '../data/content';
 import { useModals } from '../router';
 import { Button } from './ui';
 
@@ -31,7 +31,7 @@ export function CallToAction() {
         ))}
       </div>
       <div className="relative mx-5 max-w-[480px] rounded-[28px] border border-white bg-white/85 px-8 py-12 text-center shadow-[0_30px_80px_-30px_rgba(0,60,160,0.4)] backdrop-blur-xl sm:mx-auto">
-        <img src="/riddle.jpg" alt="" width={56} height={56} className="mx-auto h-14 w-14 rounded-2xl object-cover" />
+        <img src={asset('riddle.jpg')} alt="" width={56} height={56} className="mx-auto h-14 w-14 rounded-2xl object-cover" />
         <h2 className="mt-6 text-[36px] font-semibold tracking-[-0.03em] text-slate-950 sm:text-[42px]">Work with me</h2>
         <p className="mx-auto mt-3 max-w-[340px] text-[15.5px] leading-relaxed text-slate-600">Book an intro call. Tell me about your channel and the video you’re planning next.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">

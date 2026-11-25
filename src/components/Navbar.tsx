@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Link, useModals } from '../router';
-import { NICHES, thumb, videosFor, type Niche } from '../data/content';
+import { NICHES, asset, thumb, videosFor, type Niche } from '../data/content';
 import { Button } from './ui';
 
 const LINK = 'rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors';
@@ -9,7 +9,7 @@ const LINK = 'rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors
 export function Logo() {
   return (
     <Link href="/" aria-label="RiddleEdits home" className="flex items-center gap-2.5">
-      <img src="/riddle.jpg" alt="" width={30} height={30} className="h-[30px] w-[30px] rounded-[9px] object-cover" />
+      <img src={asset('riddle.jpg')} alt="" width={30} height={30} className="h-[30px] w-[30px] rounded-[9px] object-cover" />
       <span className="text-[16px] font-semibold tracking-tight text-slate-950">
         Riddle<span className="text-slate-500">Edits</span>
       </span>

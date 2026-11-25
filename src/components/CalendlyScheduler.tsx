@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { CalendarDays, ExternalLink } from 'lucide-react';
-import { SITE } from '../data/content';
+import { SITE, asset } from '../data/content';
 
 declare global {
   interface Window {
@@ -45,7 +45,7 @@ export function CalendlyScheduler({ height = 680 }: { height?: number }) {
     <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white">
       <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
         <div className="flex items-center gap-3">
-          <img src="/riddle.jpg" alt="" width={36} height={36} className="h-9 w-9 rounded-xl object-cover" />
+          <img src={asset('riddle.jpg')} alt="" width={36} height={36} className="h-9 w-9 rounded-xl object-cover" />
           <div>
             <p className="text-[14px] font-semibold text-slate-900">Intro call · 30 min</p>
             <p className="text-[12.5px] text-slate-500">Google Meet link sent when you book</p>
