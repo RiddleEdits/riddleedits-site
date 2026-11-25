@@ -16,7 +16,7 @@ export function Stats() {
           <div className="absolute -left-4 top-1/2 h-56 w-[45%] -translate-y-1/2 rounded-full bg-blue-300/25 blur-[70px]" />
           <div className="absolute -right-4 top-1/2 h-56 w-[40%] -translate-y-1/2 rounded-full bg-sky-300/25 blur-[70px]" />
         </div>
-        <dl className="relative grid overflow-hidden rounded-[32px] border-4 border-white bg-[linear-gradient(160deg,rgba(245,249,255,0.72)_0%,rgba(226,238,255,0.6)_100%)] shadow-[0_24px_60px_-28px_rgba(0,102,255,0.22),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl backdrop-saturate-150 sm:grid-cols-3">
+        <dl className="relative grid overflow-hidden rounded-[32px] border-[3px] border-white bg-[linear-gradient(160deg,rgba(245,249,255,0.72)_0%,rgba(226,238,255,0.6)_100%)] shadow-[0_24px_60px_-28px_rgba(0,102,255,0.22),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl backdrop-saturate-150 sm:grid-cols-3">
           {items.map(({ icon: Icon, value, label }, i) => (
             <div key={label} className={`flex flex-col-reverse gap-3 p-8 transition-colors duration-200 ease-out hover:bg-[rgba(0,102,255,0.035)] sm:p-10 ${i ? 'border-t border-white/80 sm:border-l sm:border-t-0' : ''}`}>
               <dt className="max-w-[220px] text-[14px] leading-snug text-slate-500">{label}</dt>
