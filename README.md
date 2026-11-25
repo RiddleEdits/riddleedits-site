@@ -16,7 +16,7 @@ npm run lint     # type check
 
 Everything the site says lives in **`src/data/content.ts`**:
 
-- `SITE`: email, Calendly link, socials
+- `SITE`: email, booking page link (Google Calendar), socials
 - `CREATORS`: channels, subscriber counts, avatars (files in `public/creators/`)
 - `VIDEOS`: every video on the site with its views, length and likes. The homepage stats are calculated from these numbers.
 - `NICHES`: copy and FAQs for the GTA and Roblox pages
@@ -44,4 +44,4 @@ To use a custom domain such as riddleedits.xyz:
 1. Add it under Settings → Pages.
 2. Change `BASE_PATH` in the workflow to `/`.
 
-The contact form opens the visitor's email app with the message filled in. Bookings go through Calendly.
+The contact form opens the visitor's email app with the message filled in. Bookings go through a free Google Calendar booking page: each booking gets a Google Meet link and confirmation emails.
