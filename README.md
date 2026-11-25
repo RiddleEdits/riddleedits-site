@@ -33,6 +33,15 @@ The month-by-month numbers in the Doodle Arkey Plays case study are in `src/comp
 | `/case-studies` (with `#doodle-arkey-plays`, `#miloblox`, `#kwil`) | `CaseStudiesPage` |
 | `/contact` | `ContactPage` |
 
-Routing is client-side, so the host must serve `index.html` for every path. Vercel and Netlify do this for Vite apps. On other hosts, add a rewrite to `/index.html`.
+## Deploying
+
+Every push to `main` builds the site and publishes it to GitHub Pages (`.github/workflows/deploy.yml`):
+https://riddleedits.github.io/riddleedits-site/
+
+The workflow builds with `BASE_PATH=/riddleedits-site/` because Pages serves the site from that folder, and copies `index.html` to `404.html` so links like `/work/gta` load the app.
+
+To use a custom domain such as riddleedits.xyz:
+1. Add it under Settings → Pages.
+2. Change `BASE_PATH` in the workflow to `/`.
 
 The contact form opens the visitor's email app with the message filled in. Bookings go through Calendly.
