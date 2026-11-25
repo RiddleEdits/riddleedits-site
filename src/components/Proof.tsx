@@ -36,7 +36,7 @@ export function Stats() {
 function TestimonialCard({ creatorId, quote, hidden }: { creatorId: string; quote: string; hidden?: boolean }) {
   const c = creator(creatorId);
   return (
-    <li aria-hidden={hidden} className="w-[290px] shrink-0 sm:w-[330px]">
+    <li aria-hidden={hidden} className="w-[82cqw] shrink-0 sm:w-[calc((100cqw-1rem)/2.1)] lg:w-[calc((100cqw-3rem)/4)]">
       <figure className="group relative flex h-full select-none flex-col justify-between gap-6 rounded-[24px] border-[3px] border-white bg-[linear-gradient(160deg,rgba(255,255,255,0.7)_0%,rgba(232,241,255,0.55)_100%)] p-6 shadow-[0_18px_40px_-24px_rgba(0,102,255,0.28),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl backdrop-saturate-150">
         <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[21px] bg-[rgba(0,102,255,0.06)] opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100" />
         <blockquote className="relative text-[16px] font-medium leading-snug tracking-[-0.01em] text-slate-900">“{quote}”</blockquote>
@@ -126,11 +126,11 @@ export function Testimonials() {
   const fade = (side: 'left' | 'right') => {
     const dir = side === 'left' ? 'right' : 'left';
     return {
-      background: `linear-gradient(to ${dir}, #f8fafc 15%, rgba(248,250,252,0))`,
-      backdropFilter: 'blur(6px)',
-      WebkitBackdropFilter: 'blur(6px)',
-      maskImage: `linear-gradient(to ${dir}, #000 35%, transparent)`,
-      WebkitMaskImage: `linear-gradient(to ${dir}, #000 35%, transparent)`
+      background: `linear-gradient(to ${dir}, rgba(248,250,252,0.8), rgba(248,250,252,0))`,
+      backdropFilter: 'blur(3px)',
+      WebkitBackdropFilter: 'blur(3px)',
+      maskImage: `linear-gradient(to ${dir}, #000, transparent)`,
+      WebkitMaskImage: `linear-gradient(to ${dir}, #000, transparent)`
     };
   };
 
@@ -142,8 +142,8 @@ export function Testimonials() {
         <div className="relative mt-12">
           {/* Soft blue glows give the frosted cards something to blur */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div className="absolute left-[8%] top-1/2 h-48 w-[40%] -translate-y-1/2 rounded-full bg-blue-300/25 blur-[70px]" />
-            <div className="absolute right-[8%] top-1/2 h-48 w-[35%] -translate-y-1/2 rounded-full bg-sky-300/25 blur-[70px]" />
+            <div className="absolute left-[8%] top-1/2 h-48 w-[40%] -translate-y-1/2 rounded-full bg-blue-300/15 blur-[70px]" />
+            <div className="absolute right-[8%] top-1/2 h-48 w-[35%] -translate-y-1/2 rounded-full bg-sky-300/15 blur-[70px]" />
           </div>
 
           <div
@@ -165,7 +165,7 @@ export function Testimonials() {
             onWheel={(e) => {
               if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) s.x -= e.deltaX;
             }}
-            className="relative cursor-grab touch-pan-y overflow-hidden py-4 active:cursor-grabbing"
+            className="@container relative cursor-grab touch-pan-y overflow-hidden py-4 active:cursor-grabbing"
           >
             <ul ref={track} className="flex w-max gap-4 px-2 will-change-transform">
               {TESTIMONIALS.map((t) => (
@@ -177,8 +177,8 @@ export function Testimonials() {
             </ul>
           </div>
 
-          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24" style={fade('left')} />
-          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24" style={fade('right')} />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-6 sm:w-10" style={fade('left')} />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-6 sm:w-10" style={fade('right')} />
         </div>
       </Container>
     </section>
