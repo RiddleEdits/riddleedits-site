@@ -4,6 +4,9 @@
  * Update them here and every page picks up the change.
  */
 
+/** Path to a file in public/, correct whether the site lives at / or a subfolder. */
+export const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
+
 export const SITE = {
   name: 'RiddleEdits',
   email: 'rgsfirdaus@gmail.com',
@@ -24,14 +27,14 @@ export interface Creator {
 }
 
 export const CREATORS: Creator[] = [
-  { id: 'rageelixir', name: 'RageElixir', subs: '7.64M', avatar: '/creators/rageelixir.jpg', url: 'https://youtube.com/@rageelixir' },
-  { id: 'mia', name: 'Mia', subs: '758K', avatar: '/creators/mia.jpg', url: 'https://youtube.com/@mia-yt' },
-  { id: 'kwil', name: 'Kwil', subs: '443K', avatar: '/creators/kwil.jpg', url: 'https://youtube.com/@kw_il' },
-  { id: 'miloblox', name: 'MiloBlox', subs: '435K', avatar: '/creators/miloblox.jpg', url: 'https://youtube.com/@miloblox-yt' },
-  { id: 'sharktactics', name: 'SharkTactics', subs: '324K', avatar: '/creators/sharktactics.jpg', url: 'https://youtube.com/@sharktactics' },
-  { id: 'beckblox', name: 'BeckBlox', subs: '182K', avatar: '/creators/thebeckblox.jpg', url: 'https://youtube.com/@thebeckblox' },
-  { id: 'daltyn', name: 'Daltyn', subs: '128K', avatar: '/creators/daltynblox.jpg', url: 'https://youtube.com/@daltynblox' },
-  { id: 'doodle', name: 'Doodle Arkey Plays', subs: '104K', avatar: '/creators/doodlearkeyplays.jpg', url: 'https://youtube.com/@doodlearkeyplays' }
+  { id: 'rageelixir', name: 'RageElixir', subs: '7.64M', avatar: asset('/creators/rageelixir.jpg'), url: 'https://youtube.com/@rageelixir' },
+  { id: 'mia', name: 'Mia', subs: '758K', avatar: asset('/creators/mia.jpg'), url: 'https://youtube.com/@mia-yt' },
+  { id: 'kwil', name: 'Kwil', subs: '443K', avatar: asset('/creators/kwil.jpg'), url: 'https://youtube.com/@kw_il' },
+  { id: 'miloblox', name: 'MiloBlox', subs: '435K', avatar: asset('/creators/miloblox.jpg'), url: 'https://youtube.com/@miloblox-yt' },
+  { id: 'sharktactics', name: 'SharkTactics', subs: '324K', avatar: asset('/creators/sharktactics.jpg'), url: 'https://youtube.com/@sharktactics' },
+  { id: 'beckblox', name: 'BeckBlox', subs: '182K', avatar: asset('/creators/thebeckblox.jpg'), url: 'https://youtube.com/@thebeckblox' },
+  { id: 'daltyn', name: 'Daltyn', subs: '128K', avatar: asset('/creators/daltynblox.jpg'), url: 'https://youtube.com/@daltynblox' },
+  { id: 'doodle', name: 'Doodle Arkey Plays', subs: '104K', avatar: asset('/creators/doodlearkeyplays.jpg'), url: 'https://youtube.com/@doodlearkeyplays' }
 ];
 
 export const creator = (id: string) => CREATORS.find((c) => c.id === id)!;
