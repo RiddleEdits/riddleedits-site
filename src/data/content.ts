@@ -96,8 +96,8 @@ export const NICHES: Record<
   gta: {
     name: 'GTA',
     path: '/work/gta',
-    headline: 'GTA videos people watch to the end.',
-    intro: 'Challenges, 100 Days survival and roleplay stories. I find the story in hours of chaotic footage and cut it so every minute earns the next.',
+    headline: 'GTA video editing',
+    intro: 'Long-form GTA 5 videos for Doodle Arkey Plays: challenges, 100 Days survival and roleplay. Each one runs 10 to 20 minutes.',
     formats: ['Challenges', '100 Days', 'Roleplay'],
     faqs: [
       { q: 'What kind of GTA videos do you edit?', a: 'Long-form challenges, 100 Days survival runs and roleplay-style story videos, like the ones on this page for Doodle Arkey Plays.' },
@@ -109,12 +109,12 @@ export const NICHES: Record<
   roblox: {
     name: 'Roblox',
     path: '/work/roblox',
-    headline: 'Roblox videos with no dead air.',
-    intro: 'Rivals, Steal a Brainrot and tournament videos. Fast pacing, clear reveals and sound design that matches the energy of the game.',
+    headline: 'Roblox video editing',
+    intro: 'Long-form Roblox videos for MiloBlox and Kwil: Rivals updates, rare accounts, tournaments and Steal a Brainrot. Most run 20 minutes or more.',
     formats: ['Rivals', 'Challenges', 'Tournaments'],
     faqs: [
-      { q: 'Which Roblox games have you edited?', a: 'Mostly Rivals and Steal a Brainrot so far, for MiloBlox and Kwil. Other games are fine — the pacing rules are the same.' },
-      { q: 'How long does a video take?', a: 'Usually 48 to 72 hours for the first cut. If an update just dropped and you need it faster, tell me and we’ll sort it out.' },
+      { q: 'Which Roblox games have you edited?', a: 'Rivals and Steal a Brainrot so far, for MiloBlox and Kwil. I can edit other games too.' },
+      { q: 'How long does a video take?', a: 'Usually 48 to 72 hours for the first cut. If you need it sooner for an update video, ask.' },
       { q: 'Can you match my existing style?', a: 'Yes. Send me two or three of your videos that you like and I’ll match the pacing, captions and sound.' },
       { q: 'How does pricing work?', a: 'It depends on video length and how much raw footage there is. We’ll go through it on a call and I’ll quote you per video.' }
     ]
@@ -155,9 +155,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'doodle-arkey-plays',
     creatorId: 'doodle',
     niche: 'gta',
-    headline: 'Turning hours of GTA chaos into stories people finish',
+    headline: 'Four GTA videos for Doodle Arkey Plays',
     summary:
-      'Raw GTA sessions with friends run for hours. I find the story inside the footage, build clear escalating stakes, add sound design and meme cuts, and keep only the chases, the fails and the payoff.',
+      'Challenge, survival and roleplay videos. Each one starts as hours of gameplay with friends and ends up 10 to 20 minutes long.',
     videoIds: ['rJdJbEmO-ko', 'Azr4fHfz0vY', 'ul-omdsGBMI', 'g2qjuV8N7cQ'],
     months: [
       { label: 'Month 1', value: '900K' },
@@ -169,17 +169,17 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'miloblox',
     creatorId: 'miloblox',
     niche: 'roblox',
-    headline: 'Rivals videos that keep viewers in the match',
+    headline: 'Three Rivals videos for MiloBlox',
     summary:
-      'Myth tests, rare accounts and rigged tournaments. Long rounds cut tight, every reveal landing on time, and on-screen graphics that keep viewers oriented.',
+      'A myth-busting video for the summer update, a look at the oldest account in the game, and a rigged NOOB vs PRO tournament.',
     videoIds: ['WBtalXv3Qgc', 'hbrOQRLRL_E', 'poqx6LL7iiw']
   },
   {
     slug: 'kwil',
     creatorId: 'kwil',
     niche: 'roblox',
-    headline: 'An 800K-view Steal a Brainrot video',
-    summary: 'A 20-minute trading challenge with an overpowered twist, paced so the trades keep escalating right up to the ending.',
+    headline: 'A Steal a Brainrot video for Kwil',
+    summary: 'A 20-minute trading challenge built around an overpowered trader.',
     videoIds: ['zHvWvIpMsZA']
   }
 ];
