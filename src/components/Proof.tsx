@@ -36,10 +36,11 @@ export function Stats() {
 function TestimonialCard({ creatorId, quote, hidden }: { creatorId: string; quote: string; hidden?: boolean }) {
   const c = creator(creatorId);
   return (
-    <li aria-hidden={hidden} className="w-[300px] shrink-0 sm:w-[340px]">
-      <figure className="card flex h-full select-none flex-col justify-between gap-6 p-6">
-        <blockquote className="text-[16px] font-medium leading-snug tracking-[-0.01em] text-slate-900">“{quote}”</blockquote>
-        <figcaption className="flex items-center gap-3">
+    <li aria-hidden={hidden} className="w-[290px] shrink-0 sm:w-[330px]">
+      <figure className="group relative flex h-full select-none flex-col justify-between gap-6 rounded-[24px] border-[3px] border-white bg-[linear-gradient(160deg,rgba(255,255,255,0.7)_0%,rgba(232,241,255,0.55)_100%)] p-6 shadow-[0_18px_40px_-24px_rgba(0,102,255,0.28),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl backdrop-saturate-150">
+        <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[21px] bg-[rgba(0,102,255,0.06)] opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100" />
+        <blockquote className="relative text-[16px] font-medium leading-snug tracking-[-0.01em] text-slate-900">“{quote}”</blockquote>
+        <figcaption className="relative flex items-center gap-3">
           <Avatar id={c.id} size={36} className="ring-0" />
           <span>
             <a
@@ -48,7 +49,7 @@ function TestimonialCard({ creatorId, quote, hidden }: { creatorId: string; quot
               rel="noopener noreferrer"
               tabIndex={hidden ? -1 : 0}
               draggable={false}
-              className="block text-[14px] font-semibold text-slate-900 hover:text-[#0066ff]"
+              className="block text-[14px] font-semibold text-slate-900"
             >
               {c.name}
             </a>
@@ -60,16 +61,16 @@ function TestimonialCard({ creatorId, quote, hidden }: { creatorId: string; quot
   );
 }
 
-const SPEED = 40; // px per second, right to left
+const SPEED = 36; // px per second, right to left
 
 /**
  * One row of testimonials that loops right to left.
- * Hover pauses it; drag with the mouse (or swipe, or scroll sideways) to move it yourself.
+ * Hover eases it to a stop; drag (with a little momentum), swipe or scroll sideways to move it yourself.
  */
 export function Testimonials() {
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLUListElement>(null);
-  const state = useRef({ x: 0, paused: false, dragging: false, startX: 0, startOffset: 0, moved: 0 });
+  const state = useRef({ x: 0, v: -SPEED, paused: false, dragging: false, lastX: 0, lastT: 0, dragV: 0, moved: 0 });
 
   useEffect(() => {
     const el = track.current;
@@ -79,11 +80,17 @@ export function Testimonials() {
     let last = performance.now();
     const loop = (now: number) => {
       const s = state.current;
-      const half = el.scrollWidth / 2; // the list is rendered twice
-      if (!s.paused && !s.dragging && !reduce) s.x -= (SPEED * (now - last)) / 1000;
-      if (half > 0) s.x = ((s.x % half) - half) % half; // keep x in (-half, 0]
-      el.style.transform = `translate3d(${s.x}px,0,0)`;
+      const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
+      if (!s.dragging) {
+        // Ease the speed toward its target instead of jumping, so pauses and restarts glide.
+        const target = s.paused || reduce ? 0 : -SPEED;
+        s.v += (target - s.v) * (1 - Math.exp(-dt * 4));
+        s.x += s.v * dt;
+      }
+      const half = el.scrollWidth / 2; // the list is rendered twice
+      if (half > 0) s.x = ((s.x % half) - half) % half;
+      el.style.transform = `translate3d(${s.x}px,0,0)`;
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
@@ -93,76 +100,87 @@ export function Testimonials() {
   const s = state.current;
   const onPointerDown = (e: React.PointerEvent) => {
     s.dragging = true;
-    s.startX = e.clientX;
-    s.startOffset = s.x;
+    s.lastX = e.clientX;
+    s.lastT = performance.now();
+    s.dragV = 0;
     s.moved = 0;
     viewport.current?.setPointerCapture(e.pointerId);
   };
   const onPointerMove = (e: React.PointerEvent) => {
     if (!s.dragging) return;
-    const dx = e.clientX - s.startX;
-    s.moved = Math.max(s.moved, Math.abs(dx));
-    s.x = s.startOffset + dx;
+    const now = performance.now();
+    const dx = e.clientX - s.lastX;
+    s.x += dx;
+    s.moved += Math.abs(dx);
+    s.dragV = (dx / Math.max(1, now - s.lastT)) * 1000;
+    s.lastX = e.clientX;
+    s.lastT = now;
   };
   const endDrag = (e: React.PointerEvent) => {
+    if (!s.dragging) return;
     s.dragging = false;
+    s.v = Math.max(-1500, Math.min(1500, s.dragV)); // fling, then ease back to the normal speed
     viewport.current?.releasePointerCapture?.(e.pointerId);
+  };
+
+  const fade = (side: 'left' | 'right') => {
+    const dir = side === 'left' ? 'right' : 'left';
+    return {
+      background: `linear-gradient(to ${dir}, #f8fafc 15%, rgba(248,250,252,0))`,
+      backdropFilter: 'blur(6px)',
+      WebkitBackdropFilter: 'blur(6px)',
+      maskImage: `linear-gradient(to ${dir}, #000 35%, transparent)`,
+      WebkitMaskImage: `linear-gradient(to ${dir}, #000 35%, transparent)`
+    };
   };
 
   return (
     <section aria-label="Testimonials" className="py-24 lg:py-32">
       <Container>
         <SectionHeading eyebrow="Testimonials" title="Hear it from the creators." />
-      </Container>
 
-      <div className="relative mt-12">
-        <div
-          ref={viewport}
-          onPointerEnter={() => (s.paused = true)}
-          onPointerLeave={() => (s.paused = false)}
-          onFocus={() => (s.paused = true)}
-          onBlur={() => (s.paused = false)}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={endDrag}
-          onPointerCancel={endDrag}
-          onClickCapture={(e) => {
-            if (s.moved > 5) {
-              e.preventDefault();
-              e.stopPropagation();
-            }
-          }}
-          onWheel={(e) => {
-            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) s.x -= e.deltaX;
-          }}
-          className="cursor-grab touch-pan-y overflow-hidden py-4 active:cursor-grabbing"
-        >
-          <ul ref={track} className="flex w-max gap-4 px-2 will-change-transform">
-            {TESTIMONIALS.map((t) => (
-              <TestimonialCard key={t.creatorId} {...t} />
-            ))}
-            {TESTIMONIALS.map((t) => (
-              <TestimonialCard key={`${t.creatorId}-copy`} {...t} hidden />
-            ))}
-          </ul>
-        </div>
+        <div className="relative mt-12">
+          {/* Soft blue glows give the frosted cards something to blur */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <div className="absolute left-[8%] top-1/2 h-48 w-[40%] -translate-y-1/2 rounded-full bg-blue-300/25 blur-[70px]" />
+            <div className="absolute right-[8%] top-1/2 h-48 w-[35%] -translate-y-1/2 rounded-full bg-sky-300/25 blur-[70px]" />
+          </div>
 
-        {/* Edge fades: blur plus a fade to the page colour */}
-        {(['left', 'right'] as const).map((side) => (
           <div
-            key={side}
-            aria-hidden="true"
-            className={`pointer-events-none absolute inset-y-0 w-16 sm:w-40 ${side === 'left' ? 'left-0' : 'right-0'}`}
-            style={{
-              background: `linear-gradient(to ${side === 'left' ? 'right' : 'left'}, #f8fafc 10%, rgba(248,250,252,0))`,
-              backdropFilter: 'blur(6px)',
-              WebkitBackdropFilter: 'blur(6px)',
-              maskImage: `linear-gradient(to ${side === 'left' ? 'right' : 'left'}, #000 30%, transparent)`,
-              WebkitMaskImage: `linear-gradient(to ${side === 'left' ? 'right' : 'left'}, #000 30%, transparent)`
+            ref={viewport}
+            onPointerEnter={() => (s.paused = true)}
+            onPointerLeave={() => (s.paused = false)}
+            onFocus={() => (s.paused = true)}
+            onBlur={() => (s.paused = false)}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onClickCapture={(e) => {
+              if (s.moved > 5) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
             }}
-          />
-        ))}
-      </div>
+            onWheel={(e) => {
+              if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) s.x -= e.deltaX;
+            }}
+            className="relative cursor-grab touch-pan-y overflow-hidden py-4 active:cursor-grabbing"
+          >
+            <ul ref={track} className="flex w-max gap-4 px-2 will-change-transform">
+              {TESTIMONIALS.map((t) => (
+                <TestimonialCard key={t.creatorId} {...t} />
+              ))}
+              {TESTIMONIALS.map((t) => (
+                <TestimonialCard key={`${t.creatorId}-copy`} {...t} hidden />
+              ))}
+            </ul>
+          </div>
+
+          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24" style={fade('left')} />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24" style={fade('right')} />
+        </div>
+      </Container>
     </section>
   );
 }
