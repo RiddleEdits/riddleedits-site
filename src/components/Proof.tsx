@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Eye, Play, Users } from 'lucide-react';
 import { STATS, TESTIMONIALS, creator } from '../data/content';
 import { Avatar, Container, SectionHeading } from './ui';
@@ -32,33 +33,136 @@ export function Stats() {
   );
 }
 
+function TestimonialCard({ creatorId, quote, hidden }: { creatorId: string; quote: string; hidden?: boolean }) {
+  const c = creator(creatorId);
+  return (
+    <li aria-hidden={hidden} className="w-[300px] shrink-0 sm:w-[340px]">
+      <figure className="card flex h-full select-none flex-col justify-between gap-6 p-6">
+        <blockquote className="text-[16px] font-medium leading-snug tracking-[-0.01em] text-slate-900">“{quote}”</blockquote>
+        <figcaption className="flex items-center gap-3">
+          <Avatar id={c.id} size={36} className="ring-0" />
+          <span>
+            <a
+              href={c.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              tabIndex={hidden ? -1 : 0}
+              draggable={false}
+              className="block text-[14px] font-semibold text-slate-900 hover:text-[#0066ff]"
+            >
+              {c.name}
+            </a>
+            <span className="text-[12.5px] text-slate-500">{c.subs} subscribers</span>
+          </span>
+        </figcaption>
+      </figure>
+    </li>
+  );
+}
+
+const SPEED = 40; // px per second, right to left
+
+/**
+ * One row of testimonials that loops right to left.
+ * Hover pauses it; drag with the mouse (or swipe, or scroll sideways) to move it yourself.
+ */
 export function Testimonials() {
+  const viewport = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLUListElement>(null);
+  const state = useRef({ x: 0, paused: false, dragging: false, startX: 0, startOffset: 0, moved: 0 });
+
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let raf = 0;
+    let last = performance.now();
+    const loop = (now: number) => {
+      const s = state.current;
+      const half = el.scrollWidth / 2; // the list is rendered twice
+      if (!s.paused && !s.dragging && !reduce) s.x -= (SPEED * (now - last)) / 1000;
+      if (half > 0) s.x = ((s.x % half) - half) % half; // keep x in (-half, 0]
+      el.style.transform = `translate3d(${s.x}px,0,0)`;
+      last = now;
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const s = state.current;
+  const onPointerDown = (e: React.PointerEvent) => {
+    s.dragging = true;
+    s.startX = e.clientX;
+    s.startOffset = s.x;
+    s.moved = 0;
+    viewport.current?.setPointerCapture(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!s.dragging) return;
+    const dx = e.clientX - s.startX;
+    s.moved = Math.max(s.moved, Math.abs(dx));
+    s.x = s.startOffset + dx;
+  };
+  const endDrag = (e: React.PointerEvent) => {
+    s.dragging = false;
+    viewport.current?.releasePointerCapture?.(e.pointerId);
+  };
+
   return (
     <section aria-label="Testimonials" className="py-24 lg:py-32">
       <Container>
         <SectionHeading eyebrow="Testimonials" title="Hear it from the creators." />
-        <ul className="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4">
-          {TESTIMONIALS.map((t) => {
-            const c = creator(t.creatorId);
-            return (
-              <li key={t.creatorId} className="w-[78%] shrink-0 snap-start sm:w-auto">
-                <figure className="card flex h-full flex-col justify-between gap-6 p-6">
-                  <blockquote className="text-[16px] font-medium leading-snug tracking-[-0.01em] text-slate-900">“{t.quote}”</blockquote>
-                  <figcaption className="flex items-center gap-3">
-                    <Avatar id={c.id} size={36} className="ring-0" />
-                    <span>
-                      <a href={c.url} target="_blank" rel="noopener noreferrer" className="block text-[14px] font-semibold text-slate-900 hover:text-[#0066ff]">
-                        {c.name}
-                      </a>
-                      <span className="text-[12.5px] text-slate-500">{c.subs} subscribers</span>
-                    </span>
-                  </figcaption>
-                </figure>
-              </li>
-            );
-          })}
-        </ul>
       </Container>
+
+      <div className="relative mt-12">
+        <div
+          ref={viewport}
+          onPointerEnter={() => (s.paused = true)}
+          onPointerLeave={() => (s.paused = false)}
+          onFocus={() => (s.paused = true)}
+          onBlur={() => (s.paused = false)}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onClickCapture={(e) => {
+            if (s.moved > 5) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
+          onWheel={(e) => {
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) s.x -= e.deltaX;
+          }}
+          className="cursor-grab touch-pan-y overflow-hidden py-4 active:cursor-grabbing"
+        >
+          <ul ref={track} className="flex w-max gap-4 px-2 will-change-transform">
+            {TESTIMONIALS.map((t) => (
+              <TestimonialCard key={t.creatorId} {...t} />
+            ))}
+            {TESTIMONIALS.map((t) => (
+              <TestimonialCard key={`${t.creatorId}-copy`} {...t} hidden />
+            ))}
+          </ul>
+        </div>
+
+        {/* Edge fades: blur plus a fade to the page colour */}
+        {(['left', 'right'] as const).map((side) => (
+          <div
+            key={side}
+            aria-hidden="true"
+            className={`pointer-events-none absolute inset-y-0 w-16 sm:w-40 ${side === 'left' ? 'left-0' : 'right-0'}`}
+            style={{
+              background: `linear-gradient(to ${side === 'left' ? 'right' : 'left'}, #f8fafc 10%, rgba(248,250,252,0))`,
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+              maskImage: `linear-gradient(to ${side === 'left' ? 'right' : 'left'}, #000 30%, transparent)`,
+              WebkitMaskImage: `linear-gradient(to ${side === 'left' ? 'right' : 'left'}, #000 30%, transparent)`
+            }}
+          />
+        ))}
+      </div>
     </section>
   );
 }
