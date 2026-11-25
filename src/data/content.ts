@@ -146,6 +146,8 @@ export interface CaseStudy {
   headline: string;
   summary: string;
   videoIds: string[];
+  /** Channel views per month, from the creator's YouTube Studio. Only numbers you can prove. */
+  months?: { label: string; value: string }[];
 }
 
 export const CASE_STUDIES: CaseStudy[] = [
@@ -156,7 +158,12 @@ export const CASE_STUDIES: CaseStudy[] = [
     headline: 'Turning hours of GTA chaos into stories people finish',
     summary:
       'Raw GTA sessions with friends run for hours. I find the story inside the footage, build clear escalating stakes, add sound design and meme cuts, and keep only the chases, the fails and the payoff.',
-    videoIds: ['rJdJbEmO-ko', 'Azr4fHfz0vY', 'ul-omdsGBMI', 'g2qjuV8N7cQ']
+    videoIds: ['rJdJbEmO-ko', 'Azr4fHfz0vY', 'ul-omdsGBMI', 'g2qjuV8N7cQ'],
+    months: [
+      { label: 'Month 1', value: '900K' },
+      { label: 'Month 2', value: '2M' },
+      { label: 'Month 3 (first 15 days)', value: '1.1M' }
+    ]
   },
   {
     slug: 'miloblox',
