@@ -1,19 +1,10 @@
 import { NICHES, SITE, type Niche } from '../data/content';
 import { Link, useModals } from '../router';
 import { Button } from './ui';
+import { LogoMark } from './Navbar';
 
-/** Black squircle "|>" mark used in the footer and closing section. */
-export function PlayMark({ size = 28, className = '' }: { size?: number; className?: string }) {
-  return (
-    <span
-      aria-hidden="true"
-      className={`flex items-center justify-center bg-slate-950 font-mono font-black tracking-tighter text-white ${className}`}
-      style={{ width: size, height: size, borderRadius: size * 0.29, fontSize: size * 0.4 }}
-    >
-      |&gt;
-    </span>
-  );
-}
+/** Same personal logo as the navbar; kept under this name for existing imports. */
+export const PlayMark = LogoMark;
 
 const HEAD = 'text-xs font-bold uppercase tracking-wider text-slate-900';
 const ITEM = 'text-[13px] font-medium text-slate-500 transition-colors duration-200 hover:text-slate-900';

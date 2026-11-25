@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { ExternalLink, X } from 'lucide-react';
-import { CalendlyScheduler } from './CalendlyScheduler';
+import { BookingScheduler } from './BookingScheduler';
 
 function Modal({ onClose, label, children }: { onClose: () => void; label: string; children: ReactNode }) {
   const panel = useRef<HTMLDivElement>(null);
@@ -103,7 +103,7 @@ export function BookCallModal({ onClose }: { onClose: () => void }) {
         >
           <X aria-hidden="true" className="h-5 w-5" />
         </button>
-        <CalendlyScheduler height={640} />
+        <BookingScheduler height={640} />
       </div>
     </Modal>
   );

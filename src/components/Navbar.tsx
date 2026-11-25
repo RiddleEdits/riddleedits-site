@@ -1,22 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link, useModals } from '../router';
-import { NICHES, creator, thumb, videosFor, type Niche } from '../data/content';
+import { NICHES, asset, creator, thumb, videosFor, type Niche } from '../data/content';
 import { Avatar, Button } from './ui';
 
 const TAB = 'relative rounded-full px-3.5 py-1.5 transition-colors duration-200';
 const tabCls = (active: boolean) => `${TAB} ${active ? 'glass-tab font-semibold text-[#0066ff]' : 'text-slate-800 hover:bg-white/40 hover:text-[#0066ff]'}`;
 
-/** Blue squircle "R" mark, as in the original navbar. */
-export function LogoMark({ size = 28 }: { size?: number }) {
+/** Personal logo (riddle.exe avatar) in a rounded square. */
+export function LogoMark({ size = 28, className = '' }: { size?: number; className?: string }) {
   return (
-    <span
+    <img
+      src={asset('logo.webp')}
+      alt=""
       aria-hidden="true"
-      className="flex items-center justify-center rounded-[9px] bg-gradient-to-b from-[#1a75ff] to-[#0055eb] shadow-[0_2px_8px_rgba(0,102,255,0.4),inset_0_1px_1px_rgba(255,255,255,0.45)] ring-1 ring-black/10"
-      style={{ width: size, height: size }}
-    >
-      <span className="text-[13px] font-extrabold tracking-tight text-white drop-shadow-sm">R</span>
-    </span>
+      width={size}
+      height={size}
+      decoding="async"
+      className={`shrink-0 object-cover shadow-[0_2px_8px_rgba(0,102,255,0.25)] ring-1 ring-black/10 ${className}`}
+      style={{ width: size, height: size, borderRadius: size * 0.3 }}
+    />
   );
 }
 

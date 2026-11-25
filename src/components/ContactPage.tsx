@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Mail, Send } from 'lucide-react';
 import { NICHES, SITE, type Niche } from '../data/content';
-import { CalendlyScheduler } from './CalendlyScheduler';
+import { BookingScheduler } from './BookingScheduler';
 import { Container, Eyebrow } from './ui';
 
 const FIELD = 'w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-[14.5px] text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-[#0066ff] focus:ring-4 focus:ring-[#0066ff]/10';
@@ -29,7 +29,7 @@ export function ContactPage() {
 
         <div className="mt-12 grid items-start gap-8 lg:grid-cols-[1fr_400px]">
           <div id="book">
-            <CalendlyScheduler />
+            <BookingScheduler />
           </div>
 
           <div className="flex flex-col gap-4">
