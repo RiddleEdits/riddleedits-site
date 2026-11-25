@@ -36,8 +36,8 @@ export function Stats() {
 function TestimonialCard({ creatorId, quote, hidden }: { creatorId: string; quote: string; hidden?: boolean }) {
   const c = creator(creatorId);
   return (
-    <li aria-hidden={hidden} className="w-[82cqw] shrink-0 sm:w-[calc((100cqw-1rem)/2.1)] lg:w-[calc((100cqw-3rem)/4)]">
-      <figure className="group relative flex h-full select-none flex-col justify-between gap-6 rounded-[24px] border-[3px] border-white bg-[linear-gradient(160deg,rgba(255,255,255,0.7)_0%,rgba(232,241,255,0.55)_100%)] p-6 shadow-[0_18px_40px_-24px_rgba(0,102,255,0.28),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl backdrop-saturate-150">
+    <li aria-hidden={hidden} className="w-[76cqw] shrink-0 sm:w-[calc((100cqw-1rem)/2.3)] lg:w-[calc((100cqw-3.5rem)/4.4)]">
+      <figure className="group relative flex h-full select-none flex-col justify-between gap-6 rounded-[24px] border-[3px] border-white bg-[linear-gradient(160deg,rgba(255,255,255,0.92)_0%,rgba(236,244,255,0.88)_100%)] p-6 shadow-[0_18px_40px_-24px_rgba(0,102,255,0.28),inset_0_1px_0_rgba(255,255,255,0.9)]">
         <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[21px] bg-[rgba(0,102,255,0.06)] opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100" />
         <blockquote className="relative text-[16px] font-medium leading-snug tracking-[-0.01em] text-slate-900">“{quote}”</blockquote>
         <figcaption className="relative flex items-center gap-3">
@@ -127,8 +127,6 @@ export function Testimonials() {
     const dir = side === 'left' ? 'right' : 'left';
     return {
       background: `linear-gradient(to ${dir}, rgba(248,250,252,0.8), rgba(248,250,252,0))`,
-      backdropFilter: 'blur(3px)',
-      WebkitBackdropFilter: 'blur(3px)',
       maskImage: `linear-gradient(to ${dir}, #000, transparent)`,
       WebkitMaskImage: `linear-gradient(to ${dir}, #000, transparent)`
     };
@@ -167,7 +165,7 @@ export function Testimonials() {
             }}
             className="@container relative cursor-grab touch-pan-y overflow-hidden py-4 active:cursor-grabbing"
           >
-            <ul ref={track} className="flex w-max gap-4 px-2 will-change-transform">
+            <ul ref={track} className="flex w-max gap-4 px-2 [backface-visibility:hidden] will-change-transform">
               {TESTIMONIALS.map((t) => (
                 <TestimonialCard key={t.creatorId} {...t} />
               ))}
