@@ -26,7 +26,7 @@ export function CaseStudiesPage() {
             The channels I edit for
           </h1>
           <p className="mt-5 max-w-[520px] text-[16.5px] leading-relaxed text-slate-600">
-            The channels I edit for and the videos I cut for them. View counts come straight from YouTube.
+            The creators I edit for and their videos. View counts are from YouTube.
           </p>
           <div className="mt-8 inline-flex gap-1 rounded-full border border-slate-200 bg-white p-1" role="group" aria-label="Filter by niche">
             {filters.map(([key, label]) => (

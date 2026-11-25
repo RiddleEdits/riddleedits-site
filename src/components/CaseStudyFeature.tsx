@@ -23,10 +23,10 @@ export function CaseStudyFeature() {
             </div>
 
             <h2 id="case-study-title" className="mt-6 text-[30px] font-semibold leading-[1.1] tracking-[-0.03em] text-slate-950 sm:text-[36px] text-balance">
-              From hours of GTA footage to videos people finish
+              Editing GTA videos for Doodle Arkey Plays
             </h2>
             <p className="mt-4 max-w-[440px] text-[15.5px] leading-relaxed text-slate-600">
-              Raw sessions with friends run for hours. I find the story, build the stakes and cut everything that doesn’t move it forward.
+              Each video starts as hours of gameplay with friends. I cut it down to 10 to 20 minutes with fast pacing, clean cuts and sound effects.
             </p>
 
             {study.months && (

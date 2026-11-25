@@ -82,7 +82,6 @@ export function NichePage({ niche }: { niche: Niche }) {
         <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.4fr] lg:gap-16">
           <div>
             <h2 className="text-[32px] font-semibold tracking-[-0.03em] text-slate-950 sm:text-[38px]">{n.name} FAQs</h2>
-            <p className="mt-3 text-[15.5px] text-slate-600">Questions {n.name} creators ask before we start.</p>
           </div>
           <FaqList items={n.faqs} />
         </Container>

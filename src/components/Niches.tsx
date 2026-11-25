@@ -13,8 +13,8 @@ function NicheCard({ niche, flip }: { niche: Niche; flip?: boolean }) {
   const creatorIds = [...new Set(videos.map((v) => v.creatorId))];
 
   return (
-    <article className="card grid items-center gap-10 p-6 sm:p-10 lg:grid-cols-[0.8fr_1.2fr] lg:p-12">
-      <div className={flip ? 'lg:order-2' : ''}>
+    <article className={`card grid items-center gap-10 p-6 sm:p-10 lg:p-12 ${flip ? 'lg:grid-cols-[1.2fr_0.8fr]' : 'lg:grid-cols-[0.8fr_1.2fr]'}`}>
+      <div className={`min-w-0 ${flip ? 'lg:order-2' : ''}`}>
         <h3 className="text-[30px] font-semibold tracking-[-0.03em] text-slate-950 sm:text-[36px]">{n.name}</h3>
         <p className="mt-3 max-w-[400px] text-[15.5px] leading-relaxed text-slate-600">{n.intro}</p>
         <ul className="mt-5 flex flex-wrap gap-2">
@@ -37,7 +37,7 @@ function NicheCard({ niche, flip }: { niche: Niche; flip?: boolean }) {
         </Button>
       </div>
 
-      <div className={flip ? 'lg:order-1' : ''}>
+      <div className={`min-w-0 ${flip ? 'lg:order-1' : ''}`}>
         <VideoThumb video={video} onOpen={openVideo} showViews={false} rounded="rounded-[20px]" className="shadow-[0_30px_60px_-30px_rgba(15,40,100,0.45)]" />
         <div className="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 p-4">
           <div className="flex min-w-0 items-center gap-3">
