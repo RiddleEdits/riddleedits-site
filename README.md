@@ -22,7 +22,7 @@ Everything the site says lives in **`src/data/content.ts`**:
 - `NICHES`: copy and FAQs for the GTA and Roblox pages
 - `TESTIMONIALS`, `CASE_STUDIES`
 
-The month-by-month numbers in the Doodle Arkey Plays case study are in `src/components/GtaCaseStudy.tsx`.
+The month-by-month numbers for the Doodle Arkey Plays case study are the `months` field in `CASE_STUDIES`.
 
 ## Pages
 
