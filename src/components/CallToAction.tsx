@@ -12,19 +12,27 @@ const DETAILS = [
 
 const TOP = [...VIDEOS].sort((a, b) => b.views - a.views);
 // Three rows, each a different order so the same thumbnails don't line up
-const ROWS = [0, 3, 5].map((shift) => [...TOP.slice(shift), ...TOP.slice(0, shift)]);
+const ROWS = [0, 3, 5, 2, 6, 1].map((shift) => [...TOP.slice(shift), ...TOP.slice(0, shift)]);
 
 /** Closing section: dark wall of real edits, copy on the left, booking card on the right. Runs into the dark footer. */
 export function CallToAction() {
   const { openBookCall } = useModals();
   return (
-    <section aria-label="Work with me" className="relative overflow-hidden bg-[#111113] py-28 lg:py-36">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
-        <div className="flex shrink-0 -rotate-[6deg] flex-col gap-4 sm:gap-6">
+    <section aria-label="Work with me" className="relative overflow-hidden bg-[#111113] pb-28 pt-[230px] lg:pb-36 lg:pt-[340px]">
+      {/* Fade from the light page into the dark section, so there is no hard edge */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[140px] lg:h-[220px]"
+        style={{ background: 'linear-gradient(to bottom, #f8fbff 0%, #e3e5ea 18%, #a9abb1 42%, #5a5b60 68%, #26272a 86%, #111113 100%)' }}
+      />
+
+      {/* Wall of real edits: rows start off-screen on the left and are twice as long as needed, so they never run out mid-frame */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 top-[140px] overflow-hidden lg:top-[220px]">
+        <div className="absolute left-[-20%] top-1/2 flex w-[140%] -translate-y-1/2 -rotate-[6deg] flex-col items-start gap-4 sm:gap-6">
           {ROWS.map((row, r) => (
             <ul
               key={r}
-              className="animate-marquee flex w-max gap-4 sm:gap-6"
+              className={`animate-marquee flex w-max shrink-0 gap-4 sm:gap-6 ${r > 3 ? 'sm:hidden' : ''}`}
               style={{ animationDuration: `${70 + r * 12}s`, animationDirection: r % 2 ? 'reverse' : 'normal' }}
             >
               {[...row, ...row].map((v, i) => (
@@ -35,6 +43,8 @@ export function CallToAction() {
             </ul>
           ))}
         </div>
+        {/* Thumbnails rise out of the dark instead of starting on a hard line */}
+        <div className="absolute inset-x-0 top-0 h-56 bg-[linear-gradient(180deg,#111113_0%,rgba(17,17,19,0.9)_30%,rgba(17,17,19,0.6)_60%,rgba(17,17,19,0.25)_82%,transparent_100%)] lg:h-72" />
         {/* Dark wash: strongest behind the copy, lighter on the right so the edits show */}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,12,0.94)_0%,rgba(10,10,12,0.84)_34%,rgba(10,10,12,0.46)_60%,rgba(10,10,12,0.26)_100%)]" />
         {/* Vignette */}
