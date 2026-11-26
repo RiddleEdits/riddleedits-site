@@ -13,12 +13,13 @@ const CSS = `
 .tl-svg .pulse { transform-box: fill-box; transform-origin: center; animation: tl-pulse 1.8s ease-out infinite; }
 @keyframes tl-pulse { 0% { transform: scale(.6); opacity: .55; } 100% { transform: scale(2.2); opacity: 0; } }
 
-.tl-svg .note { font-family: "Inter", system-ui, sans-serif; font-weight: 600; letter-spacing: -0.02em; fill: #0f172a; }
+.tl-svg .note { font-family: "Caveat", "Segoe Print", cursive; font-weight: 700; fill: #0b1020; }
 .tl-svg .ltr { opacity: 0; transform-box: fill-box; transform-origin: 50% 100%;
-  animation: tl-ltr .45s cubic-bezier(.2,.8,.2,1) forwards; }
-@keyframes tl-ltr { 0% { opacity: 0; transform: translateY(6px); } 100% { opacity: 1; transform: none; } }
+  animation: tl-ltr .55s cubic-bezier(.3,1.7,.5,1) forwards, tl-wave 2.6s ease-in-out infinite; }
+@keyframes tl-ltr { 0% { opacity: 0; transform: translateY(12px) rotate(-14deg) scale(.5); } 100% { opacity: 1; transform: none; } }
+@keyframes tl-wave { 0%, 100% { opacity: 1; transform: translateY(0) rotate(0); } 50% { opacity: 1; transform: translateY(-3px) rotate(-3deg); } }
 
-.tl-svg .arrow { fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.tl-svg .arrow { fill: none; stroke: #0b1020; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
 .tl-svg .arrow.armed { stroke-dashoffset: 1; }
 .tl-svg .arrow.armed.go { animation: tl-draw .7s cubic-bezier(.6,.1,.3,1) forwards; }
 .tl-svg .arrow.head.armed.go { animation-duration: .28s; animation-timing-function: ease-out; }
@@ -50,9 +51,9 @@ const LAYERS: { id: string; color: string; y: number; clips: [number, number, Ki
 
 // each arrow starts at its own word and stops just short of its layer
 const NOTES = [
-  { text: 'Visuals', x: 150, y: 56, size: 22, anchor: 'end', rotate: 0, from: [158, 42], tip: [200, 104], bend: [[30, -12], [-2, -44]], nudge: [1, 3] },
-  { text: 'Clean cuts', x: 430, y: 46, size: 22, anchor: 'start', rotate: 0, from: [424, 40], tip: [392, 104], bend: [[-30, -2], [4, -34]], nudge: [-1, 3] },
-  { text: 'Sound design', x: 414, y: 390, size: 22, anchor: 'start', rotate: 0, from: [406, 380], tip: [350, 338], bend: [[-36, 4], [0, 32]], nudge: [-1, -3] },
+  { text: 'Visuals', x: 150, y: 58, size: 36, anchor: 'end', rotate: -4, from: [158, 42], tip: [200, 104], bend: [[30, -12], [-2, -44]], nudge: [1, 3] },
+  { text: 'Clean cuts', x: 430, y: 46, size: 32, anchor: 'start', rotate: 3, from: [424, 40], tip: [392, 104], bend: [[-30, -2], [4, -34]], nudge: [-1, 3] },
+  { text: 'Sound Design', x: 414, y: 392, size: 34, anchor: 'start', rotate: -3, from: [406, 380], tip: [350, 338], bend: [[-36, 4], [0, 32]], nudge: [-1, -3] },
 ] as const;
 
 /* ---------------- helpers ---------------- */
@@ -76,6 +77,16 @@ const mod = (a: number, n: number) => ((a % n) + n) % n;
 
 export function TimelineLayers({ className = '' }: { className?: string }) {
   const svgRef = useRef<SVGSVGElement>(null);
+
+  // load the handwriting font once
+  useEffect(() => {
+    if (document.querySelector('link[data-tl-font]')) return;
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap';
+    l.dataset.tlFont = '1';
+    document.head.appendChild(l);
+  }, []);
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -187,7 +198,7 @@ export function TimelineLayers({ className = '' }: { className?: string }) {
       at: -9,
     }));
 
-    /* ----- labels + arrows ----- */
+    /* ----- hand-written notes + arrows ----- */
     const timers: number[] = [];
     let started = false;
     const startNotes = () => {
@@ -221,7 +232,7 @@ export function TimelineLayers({ className = '' }: { className?: string }) {
             const t = make('text', { class: 'ltr', x: pos[i].x, y: pos[i].y, 'font-size': n.size }, holder);
             t.textContent = ch;
             const inAt = delay + i * 0.055;
-            t.style.animationDelay = `${inAt}s`;
+            t.style.animationDelay = `${inAt}s, ${inAt + 0.6 + i * 0.09}s`;
           });
           word.style.display = 'none';
         } catch {
@@ -235,7 +246,7 @@ export function TimelineLayers({ className = '' }: { className?: string }) {
         delay += 0.55;
       });
     };
-    const fontReady = document.fonts?.load ? document.fonts.load('600 22px Inter').catch(() => undefined) : Promise.resolve();
+    const fontReady = document.fonts?.load ? document.fonts.load('700 36px Caveat').catch(() => undefined) : Promise.resolve();
     Promise.race([fontReady, new Promise((r) => timers.push(window.setTimeout(r, 1200)))]).then(startNotes, startNotes);
     timers.push(window.setTimeout(startNotes, 2000));
 
