@@ -1,93 +1,95 @@
-import { Play } from 'lucide-react';
-import { SITE, VIDEOS, compact, thumb } from '../data/content';
-import { useModals } from '../router';
-import { Button } from './ui';
-import { PlayMark } from './Footer';
+import { CalendarDays, Clock, Video as VideoIcon } from 'lucide-react';
+import { VIDEOS, thumb } from '../data/content';
+import { Link, useModals } from '../router';
+import { Button, Container } from './ui';
+import { LogoMark } from './Navbar';
 
-// Thumbnails floating around the card: [videoId, top, left, rotate, width, opacity]. Desktop only.
-const FLOATERS: [string, string, string, number, number, number][] = [
-  ['rJdJbEmO-ko', '24%', '9%', -6, 220, 0.9],
-  ['zHvWvIpMsZA', '68%', '23%', 5, 210, 0.9],
-  ['ul-omdsGBMI', '22%', '87%', 6, 216, 0.88],
-  ['hbrOQRLRL_E', '70%', '79%', -4, 210, 0.9],
-  ['WBtalXv3Qgc', '86%', '10%', 3, 190, 0.75],
-  [SITE.showreelId, '13%', '31%', -3, 180, 0.7],
-  ['rJdJbEmO-ko', '11%', '69%', 4, 185, 0.7],
-  ['zHvWvIpMsZA', '55%', '93%', -5, 190, 0.75],
-  ['ul-omdsGBMI', '53%', '4%', -3, 180, 0.7],
-  ['hbrOQRLRL_E', '90%', '64%', 2, 180, 0.65],
-  ['WBtalXv3Qgc', '91%', '38%', -2, 174, 0.6]
+const DETAILS = [
+  { icon: Clock, text: '30 minutes' },
+  { icon: VideoIcon, text: 'Google Meet, link sent by email' },
+  { icon: CalendarDays, text: 'Pick any open slot that suits you' }
 ];
 
-export function CallToAction() {
-  const { openBookCall, openVideo } = useModals();
+const TOP = [...VIDEOS].sort((a, b) => b.views - a.views);
+// Three rows, each a different order so the same thumbnails don't line up
+const ROWS = [0, 3, 5].map((shift) => [...TOP.slice(shift), ...TOP.slice(0, shift)]);
 
+/** Closing section: dark wall of real edits, copy on the left, booking card on the right. Runs into the dark footer. */
+export function CallToAction() {
+  const { openBookCall } = useModals();
   return (
-    <section aria-label="Work with me" className="relative flex min-h-[640px] items-center justify-center overflow-hidden bg-gradient-to-b from-[#f4f9ff] via-[#eaf3fe] to-[#f8fbff] py-20 sm:min-h-[700px]">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[10%] top-[30%] h-[550px] w-[550px] rounded-full bg-blue-300/25 blur-[100px]" />
-        <div className="absolute bottom-[20%] right-[10%] h-[550px] w-[550px] rounded-full bg-sky-300/25 blur-[100px]" />
-        <svg className="absolute inset-0 h-full w-full opacity-40" viewBox="0 0 1440 800" fill="none" preserveAspectRatio="none">
-          <path d="M-100 400 C 300 200, 700 650, 1100 350 C 1300 200, 1500 380, 1600 300" stroke="#38bdf8" strokeOpacity="0.6" strokeWidth="2" />
-          <path d="M-50 500 C 350 300, 800 750, 1200 450 C 1400 300, 1550 420, 1650 380" stroke="#0066ff" strokeOpacity="0.35" strokeWidth="1.5" strokeDasharray="4 6" />
-        </svg>
+    <section aria-label="Work with me" className="relative overflow-hidden bg-[#111113] py-28 lg:py-36">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+        <div className="flex shrink-0 -rotate-[6deg] flex-col gap-4 sm:gap-6">
+          {ROWS.map((row, r) => (
+            <ul
+              key={r}
+              className="animate-marquee flex w-max gap-4 sm:gap-6"
+              style={{ animationDuration: `${70 + r * 12}s`, animationDirection: r % 2 ? 'reverse' : 'normal' }}
+            >
+              {[...row, ...row].map((v, i) => (
+                <li key={i} className="aspect-video w-[230px] shrink-0 overflow-hidden rounded-[20px] ring-1 ring-white/20 sm:w-[380px]">
+                  <img src={thumb(v.id)} alt="" loading="lazy" className="h-full w-full object-cover" />
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+        {/* Dark wash: strongest behind the copy, lighter on the right so the edits show */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,12,0.94)_0%,rgba(10,10,12,0.84)_34%,rgba(10,10,12,0.46)_60%,rgba(10,10,12,0.26)_100%)]" />
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_70%_at_60%_50%,transparent_45%,rgba(10,10,12,0.75)_100%)]" />
+        {/* Soft dark patch behind the copy so it always reads */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_60%_at_22%_50%,rgba(10,10,12,0.75)_0%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-[#111113]/75 lg:hidden" />
       </div>
 
-      <div className="absolute inset-0 hidden sm:block">
-        {FLOATERS.map(([id, top, left, rotate, width, opacity], i) => {
-          const video = VIDEOS.find((v) => v.id === id);
-          const title = video?.title ?? 'Showreel';
-          return (
-            <div
-              key={i}
-              className={`absolute ${i > 6 ? 'hidden lg:block' : ''}`}
-              style={{ top, left, width, opacity, zIndex: 10 - Math.floor(i / 2) }}
-            >
-              <div
-                className="animate-float will-change-transform"
-                style={{ animation: `float-${'abc'[i % 3]} ${5.5 + (i % 4) * 1.2}s ease-in-out ${(i % 5) * 0.7}s infinite alternate` }}
-              >
-                <button
-                  type="button"
-                  tabIndex={-1}
-                  aria-hidden="true"
-                  onClick={() => openVideo(id, title)}
-                  className="group relative block w-full cursor-pointer transition-[scale,opacity] duration-300 ease-out hover:z-40 hover:scale-110"
-                  style={{ rotate: `${rotate}deg` }}
-                >
-                  <span className="relative block aspect-video overflow-hidden rounded-[16px] border border-white/70 shadow-[0_16px_35px_rgba(0,102,255,0.14)] transition-shadow duration-300 group-hover:shadow-[0_20px_45px_rgba(0,102,255,0.25)]">
-                    <img src={thumb(id)} alt="" loading="lazy" className="h-full w-full object-cover" />
-                    {video && (
-                      <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full bg-black/80 px-2.5 py-0.5 text-[10px] font-semibold text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
-                        <Play className="h-2.5 w-2.5 shrink-0 fill-white" />
-                        {compact(video.views)}
-                      </span>
-                    )}
-                  </span>
-                </button>
+      <Container className="relative">
+        <div className="grid items-center gap-12 lg:grid-cols-[1fr_440px]">
+          <div>
+            <LogoMark size={56} className="ring-2 ring-white/25" />
+            <h2 className="mt-6 text-[clamp(34px,4.4vw,52px)] font-semibold leading-[1.05] tracking-[-0.04em] text-white">
+              Work <span className="text-white/65">With Me</span>
+            </h2>
+            <p className="mt-4 max-w-[430px] text-[16px] leading-relaxed text-neutral-300">Book an intro call. I take on a few new creators at a time.</p>
+            <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
+              <Button onClick={openBookCall}>Book a call</Button>
+              <Link href="/case-studies" className="btn border border-white/20 bg-white/[0.06] text-white hover:bg-white/[0.12]">
+                <span>View case studies</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-[28px] border border-white/15 bg-[linear-gradient(160deg,rgba(48,48,52,0.7)_0%,rgba(20,20,23,0.8)_100%)] p-6 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl sm:p-7">
+            <div className="flex items-center gap-3">
+              <LogoMark size={44} className="ring-white/20" />
+              <div>
+                <p className="text-[16px] font-semibold text-white">Intro call with RiddleEdits</p>
+                <p className="text-[13px] text-neutral-400">Free · no prep needed</p>
               </div>
             </div>
-          );
-        })}
-      </div>
-
-      <div className="relative z-20 w-full max-w-[560px] px-6">
-        <div className="rounded-[32px] border border-white bg-white/85 p-8 text-center shadow-[0_20px_60px_rgba(0,102,255,0.12)] ring-1 ring-blue-900/5 backdrop-blur-2xl sm:p-12">
-          <PlayMark size={56} className="mx-auto mb-6 shadow-md" />
-          <h2 className="text-[36px] font-extrabold leading-tight tracking-tight text-slate-900 sm:text-[44px]">
-            Work <span className="text-[#0066ff]">With Me</span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-[380px] text-[15px] font-medium leading-relaxed text-slate-600 sm:text-[16px]">
-            Book an intro call. I take on a few new creators at a time.
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
-            <Button onClick={openBookCall}>Book a call</Button>
-            <Button variant="secondary" href="/case-studies">
-              View case studies
-            </Button>
+            <ul className="mt-6 space-y-3.5 border-t border-white/10 pt-6">
+              {DETAILS.map(({ icon: Icon, text }) => (
+                <li key={text} className="flex items-center gap-3 text-[14.5px] text-neutral-200">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.08] text-neutral-200 ring-1 ring-white/10">
+                    <Icon aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  {text}
+                </li>
+              ))}
+            </ul>
+            <button type="button" onClick={openBookCall} className="btn btn-primary mt-7 w-full justify-center">
+              <span>See open times</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </button>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

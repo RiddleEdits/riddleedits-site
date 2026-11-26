@@ -6,24 +6,24 @@ import { LogoMark } from './Navbar';
 /** Same personal logo as the navbar; kept under this name for existing imports. */
 export const PlayMark = LogoMark;
 
-const HEAD = 'text-xs font-bold uppercase tracking-wider text-slate-900';
-const ITEM = 'text-[13px] font-medium text-slate-500 transition-colors duration-200 hover:text-slate-900';
-const SOCIAL = 'flex h-8 w-8 items-center justify-center rounded-full border border-slate-300/80 bg-white text-slate-700 transition-colors duration-200 hover:border-slate-900 hover:text-slate-900';
+const HEAD = 'text-xs font-bold uppercase tracking-wider text-white';
+const ITEM = 'text-[13px] font-medium text-neutral-400 transition-colors duration-200 hover:text-white';
+const SOCIAL = 'flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-neutral-300 transition-colors duration-200 hover:border-white/40 hover:text-white';
 
 export function Footer() {
   const { openBookCall } = useModals();
   return (
-    <footer className="border-t border-slate-200/90 bg-[#f8fbff] text-[14px] text-slate-600">
+    <footer className="border-t border-white/[0.06] bg-[#111113] text-[14px] text-neutral-400">
       <div className="mx-auto max-w-[1240px] px-6 pb-12 pt-14 sm:pt-16 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 border-b border-slate-200/80 pb-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] lg:gap-8">
+        <div className="grid grid-cols-1 gap-10 border-b border-white/[0.08] pb-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] lg:gap-8">
           <div className="space-y-4">
             <Link href="/" aria-label="RiddleEdits home" className="flex items-center gap-2">
               <PlayMark />
-              <span translate="no" className="text-[16px] font-extrabold tracking-tight text-slate-900">
-                Riddle<span className="font-semibold text-slate-700">Edits</span>
+              <span translate="no" className="text-[16px] font-extrabold tracking-tight text-white">
+                Riddle<span className="font-semibold text-neutral-400">Edits</span>
               </span>
             </Link>
-            <p className="max-w-[240px] text-[13px] font-medium text-slate-500">Remote editing for YouTube creators.</p>
+            <p className="max-w-[240px] text-[13px] font-medium text-neutral-400">Remote editing for YouTube creators.</p>
             <div className="flex items-center gap-2.5 pt-1">
               <a href={SITE.x} target="_blank" rel="noopener noreferrer" aria-label="RiddleEdits on X" className={SOCIAL}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -85,7 +85,7 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <p className="pt-8 text-[13px] font-medium text-slate-400">© {new Date().getFullYear()} RiddleEdits</p>
+        <p className="pt-8 text-[13px] font-medium text-neutral-500">© {new Date().getFullYear()} RiddleEdits</p>
       </div>
     </footer>
   );
