@@ -39,7 +39,7 @@ export function Hero() {
           <div className="animate-fade-up">
 <Headline />
             <p className="mt-6 max-w-[460px] text-[17px] leading-relaxed text-slate-600">
-              I edit long-form videos that don’t bore people. Fast pacing, clean cuts and sound design that keeps retention high.
+              I keep viewers watching. I turn hours of gameplay into 20 minutes nobody skips.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button onClick={openBookCall}>Book a call</Button>

@@ -5,9 +5,9 @@ import { Avatar, Container, SectionHeading } from './ui';
 
 export function Stats() {
   const items = [
-    { icon: Users, value: STATS[0].value, label: STATS[0].label },
+    { icon: Play, value: STATS[0].value, label: STATS[0].label },
     { icon: Eye, value: STATS[1].value, label: STATS[1].label },
-    { icon: Play, value: STATS[2].value, label: STATS[2].label }
+    { icon: Users, value: STATS[2].value, label: STATS[2].label }
   ];
   return (
     <section aria-label="Numbers" className="relative pb-24 lg:pb-32">
@@ -20,7 +20,7 @@ export function Stats() {
         <dl className="relative grid overflow-hidden rounded-[32px] border-[3px] border-white bg-[linear-gradient(160deg,rgba(245,249,255,0.72)_0%,rgba(226,238,255,0.6)_100%)] shadow-[0_24px_60px_-28px_rgba(0,102,255,0.22),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl backdrop-saturate-150 sm:grid-cols-3">
           {items.map(({ icon: Icon, value, label }, i) => (
             <div key={label} className={`flex flex-col-reverse gap-3 p-8 transition-colors duration-200 ease-out hover:bg-[rgba(0,102,255,0.035)] sm:p-10 ${i ? 'border-t border-white/80 sm:border-l sm:border-t-0' : ''}`}>
-              <dt className="max-w-[220px] text-[14px] leading-snug text-slate-500">{label}</dt>
+              <dt className="min-h-[2.75em] max-w-[220px] text-[14px] leading-snug text-slate-500">{label}</dt>
               <dd className="text-[52px] font-semibold leading-none tracking-[-0.045em] text-slate-950 tabular-nums sm:text-[56px]">{value}</dd>
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-[#0066ff] shadow-[0_4px_12px_-4px_rgba(0,102,255,0.35)] ring-1 ring-blue-100">
                 <Icon aria-hidden="true" className="h-[18px] w-[18px]" />

@@ -52,7 +52,7 @@ export function CallToAction() {
             <h2 className="mt-6 text-[clamp(34px,4.4vw,52px)] font-semibold leading-[1.05] tracking-[-0.04em] text-white">
               Work <span className="text-white/65">With Me</span>
             </h2>
-            <p className="mt-4 max-w-[430px] text-[16px] leading-relaxed text-neutral-300">Book an intro call. I take on a few new creators at a time.</p>
+            <p className="mt-4 max-w-[430px] text-[16px] leading-relaxed text-neutral-300">Let’s hop on a call to talk about your content and how I can help you retain more viewers.</p>
             <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
               <Button onClick={openBookCall}>Book a call</Button>
               <Link href="/case-studies" className="btn border border-white/20 bg-white/[0.06] text-white hover:bg-white/[0.12]">
