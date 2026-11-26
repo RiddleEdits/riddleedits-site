@@ -3,6 +3,19 @@ import { useModals } from '../router';
 import { Avatar, Button, Container } from './ui';
 import { TimelineLayers } from './TimelineLayers';
 
+/** Three deliberate lines in a tight display cut; the niche fades from deep to light blue. */
+function Headline() {
+  return (
+    <h1 className="font-['Inter_Tight_Variable'] text-[clamp(42px,5vw,66px)] font-semibold leading-[1.0] tracking-[-0.045em] text-slate-950">
+      The editor behind
+      <br />
+      <span className="bg-gradient-to-r from-[#0057e6] via-[#0a6cff] to-[#4aa3ff] bg-clip-text pb-[0.06em] text-transparent">GTA &amp; Roblox</span>
+      <br />
+      channels.
+    </h1>
+  );
+}
+
 export function Hero() {
   const { openBookCall } = useModals();
   const marquee = [...CREATORS, ...CREATORS];
@@ -24,9 +37,7 @@ export function Hero() {
       <Container className="relative">
         <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div className="animate-fade-up">
-            <h1 className="text-[clamp(40px,5.2vw,68px)] font-semibold leading-[1.02] tracking-[-0.04em] text-slate-950 text-balance">
-              The editor behind <span className="text-[#0066ff]">GTA and Roblox</span> channels
-            </h1>
+<Headline />
             <p className="mt-6 max-w-[460px] text-[17px] leading-relaxed text-slate-600">
               I edit long-form videos that don’t bore people. Fast pacing, clean cuts and sound design that keeps retention high.
             </p>
