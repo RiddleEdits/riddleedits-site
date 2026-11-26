@@ -80,13 +80,11 @@ export function compactLikes(n: number): string {
 export const thumb = (id: string, size: 'hq' | 'max' = 'hq') =>
   `https://i.ytimg.com/vi/${id}/${size === 'max' ? 'maxresdefault' : 'hqdefault'}.jpg`;
 
-const totalViews = VIDEOS.reduce((sum, v) => sum + v.views, 0);
-const topVideo = [...VIDEOS].sort((a, b) => b.views - a.views)[0];
 
 export const STATS = [
-  { value: '10M+', label: 'Combined subscribers of the creators I’ve edited for' },
-  { value: `${compact(totalViews)}+`, label: `Views on the ${VIDEOS.length} videos on this site` },
-  { value: compact(topVideo.views), label: `Views on my top edit, for ${creator(topVideo.creatorId).name}` }
+  { value: '100+', label: 'Videos edited and delivered' },
+  { value: '50M+', label: 'Views on videos I’ve edited' },
+  { value: '20+', label: 'Creators I’ve worked with in GTA and Roblox' }
 ];
 
 export const NICHES: Record<
@@ -97,7 +95,7 @@ export const NICHES: Record<
     name: 'GTA',
     path: '/work/gta',
     headline: 'GTA video editing',
-    intro: 'Long-form GTA 5 videos for Doodle Arkey Plays: challenges, 100 Days survival and roleplay. Each one runs 10 to 20 minutes.',
+    intro: 'Challenges, survival and roleplay vids for Doodle Arkey Plays.',
     formats: ['Challenges', '100 Days', 'Roleplay'],
     faqs: [
       { q: 'What kind of GTA videos do you edit?', a: 'Long-form challenges, 100 Days survival runs and roleplay-style story videos, like the ones on this page for Doodle Arkey Plays.' },
@@ -110,7 +108,7 @@ export const NICHES: Record<
     name: 'Roblox',
     path: '/work/roblox',
     headline: 'Roblox video editing',
-    intro: 'Long-form Roblox videos for MiloBlox and Kwil: Rivals updates, rare accounts, tournaments and Steal a Brainrot. Most run 20 minutes or more.',
+    intro: 'Rivals and Steal a Brainrot for MiloBlox and Kwil.',
     formats: ['Rivals', 'Challenges', 'Tournaments'],
     faqs: [
       { q: 'Which Roblox games have you edited?', a: 'Rivals and Steal a Brainrot so far, for MiloBlox and Kwil. I can edit other games too.' },
@@ -155,9 +153,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'doodle-arkey-plays',
     creatorId: 'doodle',
     niche: 'gta',
-    headline: 'Four GTA videos for Doodle Arkey Plays',
+    headline: 'Doodle Arkey Plays: 900K → 2M views a month',
     summary:
-      'Challenge, survival and roleplay videos. Each one starts as hours of gameplay with friends and ends up 10 to 20 minutes long.',
+      'Hours of gameplay with 2–3 POVs, cut to 10–20 minutes.',
     videoIds: ['rJdJbEmO-ko', 'Azr4fHfz0vY', 'ul-omdsGBMI', 'g2qjuV8N7cQ'],
     months: [
       { label: 'Month 1', value: '900K' },
