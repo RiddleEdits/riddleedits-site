@@ -6,7 +6,7 @@ import { TimelineLayers } from './TimelineLayers';
 /** Three deliberate lines in a tight display cut; the niche fades from deep to light blue. */
 function Headline() {
   return (
-    <h1 className="font-['Inter_Tight_Variable'] text-[clamp(42px,5vw,66px)] font-semibold leading-[1.0] tracking-[-0.045em] text-slate-950">
+    <h1 className="text-[clamp(34px,3.7vw,52px)] font-bold leading-[1.06] tracking-[-0.03em] text-slate-950">
       The editor behind
       <br />
       <span className="bg-gradient-to-r from-[#0057e6] via-[#0a6cff] to-[#4aa3ff] bg-clip-text pb-[0.06em] text-transparent">GTA &amp; Roblox</span>

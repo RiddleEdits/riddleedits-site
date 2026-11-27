@@ -10,8 +10,8 @@ export function BookingScheduler({ height = 680 }: { height?: number }) {
 
   return (
     <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white">
-      <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
+        <div className="flex min-w-[220px] flex-1 items-center gap-3">
           <img src={asset('logo.webp')} alt="" width={36} height={36} className="h-9 w-9 rounded-xl object-cover" />
           <div>
             <p className="text-[14px] font-semibold text-slate-900">Intro call · 30 min</p>
