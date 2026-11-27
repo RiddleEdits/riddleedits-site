@@ -14,6 +14,27 @@ const TOP = [...VIDEOS].sort((a, b) => b.views - a.views);
 // Three rows, each a different order so the same thumbnails don't line up
 const ROWS = [0, 3, 5, 2, 6, 1].map((shift) => [...TOP.slice(shift), ...TOP.slice(0, shift)]);
 
+/** Four to six tilted rows of real edits sliding in a loop. Rows start off-screen and are twice as long as needed, so they never run out mid-frame. */
+function Wall({ blurred = false, still = false }: { blurred?: boolean; still?: boolean }) {
+  return (
+    <div className="absolute left-[-20%] top-1/2 flex w-[140%] -translate-y-1/2 -rotate-[6deg] flex-col items-start gap-4 sm:gap-6">
+      {ROWS.map((row, r) => (
+        <ul
+          key={r}
+          className={`animate-marquee flex w-max shrink-0 gap-4 sm:gap-6 ${r > 3 ? 'sm:hidden' : ''}`}
+          style={still ? { animation: 'none', transform: `translateX(-${12 + r * 9}%)` } : { animationDuration: `${70 + r * 12}s`, animationDirection: r % 2 ? 'reverse' : 'normal' }}
+        >
+          {[...row, ...row].map((v, i) => (
+            <li key={i} className="aspect-video w-[230px] shrink-0 overflow-hidden rounded-[20px] ring-1 ring-white/20 sm:w-[380px]">
+              <img src={thumb(v.id)} alt="" loading="lazy" className={`h-full w-full object-cover ${blurred ? 'scale-105 blur-[3px]' : 'scale-105 blur-[3px] lg:scale-100 lg:blur-none'}`} />
+            </li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  );
+}
+
 /** Closing section: dark wall of real edits, copy on the left, booking card on the right. Runs into the dark footer. */
 export function CallToAction() {
   const { openBookCall } = useModals();
@@ -21,20 +42,10 @@ export function CallToAction() {
     <section aria-label="Work with me" className="relative overflow-hidden bg-[#111113] pb-28 pt-32 lg:pb-36 lg:pt-44">
       {/* Wall of real edits: rows start off-screen on the left and are twice as long as needed, so they never run out mid-frame */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-20%] top-1/2 flex w-[140%] -translate-y-1/2 -rotate-[6deg] flex-col items-start gap-4 sm:gap-6">
-          {ROWS.map((row, r) => (
-            <ul
-              key={r}
-              className={`animate-marquee flex w-max shrink-0 gap-4 sm:gap-6 ${r > 3 ? 'sm:hidden' : ''}`}
-              style={{ animationDuration: `${70 + r * 12}s`, animationDirection: r % 2 ? 'reverse' : 'normal' }}
-            >
-              {[...row, ...row].map((v, i) => (
-                <li key={i} className="aspect-video w-[230px] shrink-0 overflow-hidden rounded-[20px] ring-1 ring-white/20 sm:w-[380px]">
-                  <img src={thumb(v.id)} alt="" loading="lazy" className="h-full w-full scale-105 object-cover blur-[3px] lg:blur-[2px]" />
-                </li>
-              ))}
-            </ul>
-          ))}
+        <Wall />
+        {/* Desktop: a still, blurred copy of the wall fades in on the left behind the copy (static, so it costs nothing per frame) */}
+        <div className="absolute inset-0 hidden [mask-image:linear-gradient(90deg,#000_0%,#000_38%,transparent_52%)] [transform:translateZ(0)] lg:block bg-[#111113]">
+          <Wall blurred still />
         </div>
         {/* Dark wash: strongest behind the copy, lighter on the right so the edits show */}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,12,0.94)_0%,rgba(10,10,12,0.84)_34%,rgba(10,10,12,0.46)_60%,rgba(10,10,12,0.26)_100%)]" />
