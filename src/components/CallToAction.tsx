@@ -42,19 +42,24 @@ export function CallToAction() {
     <section aria-label="Work with me" className="relative overflow-hidden bg-[#111113] pb-28 pt-32 lg:pb-36 lg:pt-44">
       {/* Wall of real edits: rows start off-screen on the left and are twice as long as needed, so they never run out mid-frame */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/* Desktop: the wall is split at a seam. Left of it a blurred copy, right of it the sharp one; both move in sync, and plain clipping keeps it cheap */}
-        <div className="absolute inset-0 lg:left-[47%] overflow-hidden">
-          <div className="absolute inset-y-0 right-0 w-full lg:w-[188.68%]">
+        {/* Sharp wall: full width on smaller screens, on desktop only where it can be seen (right of the opaque blurred part) */}
+        <div className="absolute inset-0 overflow-hidden lg:left-[44%]">
+          <div className="absolute inset-y-0 right-0 w-full lg:w-[178.57%]">
             <Wall />
           </div>
         </div>
-        <div className="absolute inset-y-0 left-0 hidden w-[47%] overflow-hidden lg:block">
-          <div className="absolute inset-y-0 left-0 w-[212.77%]">
+        {/* Desktop: a blurred copy in exact sync sits on top behind the copy, then fades out over a narrow strip.
+            The wide part is only clipped and the fade strip is small, so it stays cheap to draw. */}
+        <div className="absolute inset-y-0 left-0 hidden w-[44%] overflow-hidden lg:block">
+          <div className="absolute inset-y-0 left-0" style={{ width: `${100 / 0.44}%` }}>
             <Wall blurred />
           </div>
         </div>
-        {/* Soft dark band over the seam so the switch from blurred to sharp isn't a hard line */}
-        <div className="absolute inset-y-0 left-[41%] hidden w-[12%] bg-[linear-gradient(90deg,transparent,rgba(17,17,19,0.85)_45%,rgba(17,17,19,0.85)_55%,transparent)] lg:block" />
+        <div className="absolute inset-y-0 left-[44%] hidden w-[10%] overflow-hidden [mask-image:linear-gradient(90deg,#000,transparent)] lg:block">
+          <div className="absolute inset-y-0" style={{ left: `${-44 / 0.1}%`, width: `${100 / 0.1}%` }}>
+            <Wall blurred />
+          </div>
+        </div>
         {/* Dark wash: strongest behind the copy, lighter on the right so the edits show */}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,12,0.94)_0%,rgba(10,10,12,0.84)_34%,rgba(10,10,12,0.46)_60%,rgba(10,10,12,0.26)_100%)]" />
         {/* Vignette */}
