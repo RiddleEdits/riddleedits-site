@@ -30,7 +30,7 @@ export function CallToAction() {
             >
               {[...row, ...row].map((v, i) => (
                 <li key={i} className="aspect-video w-[230px] shrink-0 overflow-hidden rounded-[20px] ring-1 ring-white/20 sm:w-[380px]">
-                  <img src={thumb(v.id)} alt="" loading="lazy" className="h-full w-full object-cover" />
+                  <img src={thumb(v.id)} alt="" loading="lazy" className="h-full w-full scale-105 object-cover blur-[3px] lg:blur-[2px]" />
                 </li>
               ))}
             </ul>
