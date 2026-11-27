@@ -1,11 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Montserrat Variable', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  /* Two weights only: regular for text, bold for headings and emphasis */
-  --font-weight-medium: 400;
-  --font-weight-semibold: 700;
-  --font-weight-extrabold: 700;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
   --color-brand: #0066ff;
   --color-brand-dark: #0052cc;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -49,7 +45,7 @@
   border-radius: 9999px;
   padding: 0.7rem 1.35rem;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   white-space: nowrap;
   cursor: pointer;
@@ -140,7 +136,7 @@
   color: #fff;
   padding: 10px 16px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .skip-link:focus-visible {
   top: 16px;
