@@ -19,8 +19,8 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" aria-label="RiddleEdits home" className="flex items-center gap-2">
               <PlayMark />
-              <span translate="no" className="text-[16px] font-extrabold tracking-tight text-white">
-                Riddle<span className="font-semibold text-neutral-400">Edits</span>
+              <span translate="no" className="text-[17px] font-bold tracking-tight text-white">
+                Riddle<span className="text-neutral-400">Edits</span>
               </span>
             </Link>
             <p className="max-w-[240px] text-[13px] font-medium text-neutral-400">Remote editing for YouTube creators.</p>

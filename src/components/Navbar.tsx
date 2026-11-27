@@ -89,7 +89,7 @@ export function Navbar({ path }: { path: string }) {
           <LogoMark />
         </span>
         <span translate="no" className="text-[17px] font-bold tracking-tight text-slate-950">
-          Riddle<span className="font-semibold text-slate-600">Edits</span>
+          Riddle<span className="text-slate-500">Edits</span>
         </span>
       </Link>
 
